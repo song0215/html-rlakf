@@ -1,0 +1,644 @@
+<head>
+  
+    <style>
+      
+        body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-color: #111;
+      color: #fff;
+    }
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  width: 100%;   /* 100vw 대신 100% */
+  height: 50px;
+  background-color: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 20px;
+  box-sizing: border-box;
+  z-index: 999;
+}
+  nav ul {
+          list-style-type: none;
+          padding: 0;
+          opacity: 1;
+      }
+      .nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+}
+
+  .nav-left li, .nav-right li {
+      list-style-type: none;
+      margin-right: 10px;
+      color: white;
+  }
+
+  .nav-left li a, .nav-right li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+  }
+
+  .nav-left li a:hover,
+  .nav-right li a:hover {
+      text-decoration: underline;
+      color: white;
+  }
+  .nav-left img {
+  width: 40px;
+  height: auto;
+  }
+
+  .nav-left li img {
+  height: 40px; /* 기존 이미지 크기 유지 */
+  cursor: pointer;
+}
+
+/* 가운데 이미지 (새로 추가) */
+.nav-center-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 44px;  /* 50px - 3px*2 해서 살짝 작게 */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.nav-center-logo img {
+  height: 100%;
+  display: block;
+}
+  .sidebar {
+          position: fixed;
+          top: 0;
+          left: -300px;  /* 사이드바를 화면 밖으로 숨김 */
+          width: 300px;
+          height: 100%;
+          background-color: rgba(24, 24, 24, 0.9);
+          color: white;
+          transition: left 0.3s ease;  /* 슬라이드 효과 */
+          padding-top: 20px;
+          z-index: 2000;
+      }
+
+      .sidebar a:first-of-type {
+          margin-top: 40px;
+          border-top: 1px solid rgb(185, 185, 185);
+      }
+
+      .sidebar a {
+          color: white;
+          text-decoration: none;
+          padding: 10px;
+          padding-left: 20px;
+          display: block;
+          font-size: 20px;
+          border-bottom: 1px solid rgb(185, 185, 185);
+      }
+
+      .sidebar a:hover {
+          background-color: #575757;
+      }
+
+      /* 사이드바를 열 때 */
+      .sidebar.open {
+          left: 0;  /* 화면으로 사이드바를 슬라이드 */
+      }
+
+      /* 사이드바 닫기 버튼 */
+      .close-btn {
+          position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 30px;
+          color: white;
+          cursor: pointer;
+      }
+
+      
+
+    .cent
+    {
+        display: flex; justify-content: center; align-items: center;
+    }
+
+    .door-wrapper {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      width: 16vmax;
+      height: 28vmax;
+      transform: translate(-50%, -50%) translateY(100vh);
+      animation: enter 1s ease-out forwards;
+      z-index: 1500;
+    }
+
+    .door-description {
+  position: absolute;
+  left: -30vw; /* 카드 왼쪽 위치에 맞춰 적절히 조정 */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 25vw;
+  min-width: 10vW;
+  background-color: #222;
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+  font-size: 1rem;
+  line-height: 1.5;
+  opacity: 1;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  z-index: 1000;
+}
+
+
+
+    @keyframes enter {
+      to {
+        transform: translate(-50%, -50%) translateY(0);
+      }
+    }
+
+
+    .imgbutbox {
+      position: absolute;
+      background-color: #5c5c5c;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      transition: transform 1s ease-in-out;
+    }
+
+    .top
+    {
+      top: -4.05vmax;;
+    }
+
+    .bottom {
+      bottom: 0;
+    }
+
+    .open .top {
+      transform: translateY(-100vh);
+    }
+
+
+    .open .bottom {
+      transform: translateY(100vh);
+    }
+
+    /* 문 열리면 설명 사라지게 처리 */
+.open .door-description {
+  opacity: 0;
+  transform: translate(-100%, -50%);
+  pointer-events: none;
+}
+
+
+
+    .imgbutbox img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-stack {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 500; /* ✅ 문보다 낮지만 카드끼리는 겹침 */
+}
+
+/* 카드 기본 상태 */
+.content-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20vmax;
+  height: 30vmax;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+  font-size: 24px;
+  line-height: 40vmax;
+  cursor: pointer;
+  transition: transform 1s ease, opacity 1s ease;
+  opacity: 0;
+  pointer-events: none;
+    box-sizing: border-box;
+}
+.content-box img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;  /* 이미지를 자르지 않고 줄여서 넣음 */
+  display: block;
+}
+
+/* 보이게 할 카드 */
+.content-box.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+/* 카드 사라지는 애니메이션 */
+.content-box.dismiss {
+  transform: translate(-30vw, 200%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.content-box.left-start {
+  transform: translate(-30vw, -50%);
+}
+.description {
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 1vw ); /* 카드 중심에서 오른쪽으로 5vw 띄움 */
+  transform: translateY(-50%);
+  width: 40vw;          /* 또는 45vw 등 */
+  max-width: 600px;
+  height: 25vmax;
+  background-color: #222;
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+  font-size: 1rem;
+  line-height: 1.5;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 900;
+}
+
+/* 설명 등장 시 */
+#Description.fade-in {
+  opacity: 1;
+}
+
+
+/* 설명 박스 */
+.description {
+  width: 40vw;
+  max-width: 600px;
+  height: 25vmax;
+  background-color: #222;
+  color: white;
+  border-radius: 15px;
+  padding: 25px 30px 25px 30px;
+  font-size: 1rem;
+  line-height: 1.5;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* ← 왼쪽 정렬 */
+  justify-content: flex-start; /* ↑ 위쪽 정렬 */
+}
+
+
+.arow {
+  width: 5vw;
+  max-width: 600px;
+  height: 5vw; 
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  z-index: 2000;
+  cursor: pointer;
+  border-radius: 0.5vw;
+  overflow: hidden; /* 오버레이 안 삐져나가게 */
+  position: absolute;
+    opacity: 0;
+  transform: translateY(5vh); /* 아래로 조금 내려두기 */
+  transition: transform 1s ease, opacity 1s ease;
+}
+
+.arow img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 어두운 오버레이 효과 */
+.arow::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(17, 17, 17, 0.9); /* 반투명 검정 */
+  opacity: 0;
+  pointer-events: none; /* 클릭 막지 않음 */
+  transition: opacity 0.3s ease;
+}
+
+/* dimmed 상태일 때만 어둡게 */
+.arow.dimmed::after {
+  opacity: 1;
+}
+
+.open .arow {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media screen and (max-width: 600px) {
+  .door-wrapper, .content-box, .final-card {
+    width: 90vw;
+    height: auto;
+  }
+
+  .description, .final-desc {
+    width: 90vw;
+    font-size: 0.9rem;
+  }
+}
+
+        </style>
+</head>
+<body>
+  <nav>
+      <div class="nav">
+          <ul class="nav-left">
+              <li><img src="포켓몬 카드/삼짝.png"alt="Logo" onclick="toggleSidebar()"></li>
+          </ul>
+          
+          <a href="./웹디자인.html" class="nav-center-logo">
+      <img src="포켓몬 카드/logo.png" alt="Center Logo">
+    </a>
+
+    <ul class="nav-right">
+      <!-- 기존 오른쪽 메뉴들 -->
+    </ul>
+
+      </div>
+  </nav>
+  
+    <div id="sidebar" class="sidebar">
+        <span class="close-btn" onclick="toggleSidebar()">&times;</span>
+        <a href="./웹디-0 복사본.html" >1</a>
+      <a href="./웹디-1.html">2</a>
+      <a href="./웹디-2.html">3</a>
+      <!--<a href="./tst/Untitled-3.html">4</a>-->
+    </div>
+
+<section class="cent" id="mainContent" style="margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+">
+    <div class="door-wrapper" id="doorWrapper" >
+      <div class="door-description">
+  이후 등장하는 카드들은 현재 팩에서 나오지 않는 카드들도 있습니다.
+</div>
+  <div class="imgbutbox top" style="width: 16vmax;
+      height: 7vmax;">
+    <img src="포켓몬 카드/cardpack2.jpg">
+  </div>
+  <div class="imgbutbox bottom" style="width: 16vmax;
+      height: 25vmax;">
+    <img src="포켓몬 카드/cardpack1.jpg">
+  </div>
+
+<div class="arow" id="arowL" style="top: 40%; right: 245%;">
+  <img src="포켓몬 카드/왼화.png" alt="왼쪽 화살표" style="width: 100%; height: 100%; object-fit: contain;">
+</div>
+
+<!-- 오른쪽 화살표 -->
+<div class="arow" id="arowR" style="top: 40%; right: 75%;">
+  <img src="포켓몬 카드/오화.png" alt="오른쪽 화살표" style="width: 100%; height: 100%; object-fit: contain;">
+</div>
+
+  <div class="card-stack" id="cardStack">
+    <div class="content-box"><img src="포켓몬 카드/Ccard.png" alt=""></div>
+    <div class="content-box left-start"><img src="포켓몬 카드/Ucard.png" alt=""></div>
+<div class="content-box left-start"><img src="포켓몬 카드/Rcard.png" alt=""></div>
+<div class="content-box left-start"><img src="포켓몬 카드/RRcard.png" alt=""></div>
+<div class="content-box left-start"><img src="포켓몬 카드/SRcard.png" alt=""></div>
+<div class="content-box left-start"><img src="포켓몬 카드/URcard.png" alt=""></div>
+<div class="content-box left-start"><img src="포켓몬 카드/ARcard.png" alt=""></div>
+<div class="content-box left-start"><img src="포켓몬 카드/SARcard.png" alt=""></div>
+<div class="content-box left-start"><img src="포켓몬 카드/Scard.png" alt=""></div>
+<div class="content-box left-start"><img src="포켓몬 카드/SSRcard.png" alt=""></div>
+<div class="content-box left-start"><img src="포켓몬 카드/Kcard.png" alt=""></div> 
+
+
+    <!-- 필요 시 복제 가능 -->
+  </div>
+   <div class="description" id="Description">
+  설명이 여기에 나타납니다.
+</div>
+  </div>
+  
+</section>
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  
+    <script>
+  // 사이드바 열기/닫기
+  function toggleSidebar() {
+    var sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("open");
+  }
+
+  document.addEventListener("click", function (e) {
+  const sidebar = document.getElementById("sidebar");
+  const navIcon = document.querySelector(".nav-left img");
+
+  if (!sidebar.contains(e.target) && !navIcon.contains(e.target)) {
+    sidebar.classList.remove("open");
+  }
+});
+
+const wrapper = document.getElementById('doorWrapper');
+const cards = Array.from(document.querySelectorAll('.content-box'));
+const descriptionBox = document.getElementById('Description');
+const arowR = document.getElementById('arowR'); // ✅ 오른쪽 화살표 가져오기
+
+const descriptions = [
+  "<span style='font-size:3VW;'><span style='color: #ffd900'>C</span> 카드</span><br><span style='font-size:1.3vw;'><br><span style='color: #ffd900'>Commom</span> 등급의 카드<br>가장 흔한 등급이다.<br>주로 기본 포켓몬이나 1진화 포켓몬에 부여된다.</span>",
+  "<span style='font-size:3VW; '><span style='color: #ffd900'>U</span> 카드</span><br><span style='font-size:1.3vw;'><br><span style='color: #ffd900'>Unommom</span> 등급의 카드<br>C카드에 비해선 드문카드.<br>주로 최종진화 포켓몬한테 부여된다.</span>",
+  "<span style='font-size:3VW;'><span style='color: #ffd900'>R</span> 카드</span><br><span style='font-size:1.3vw;'><br><span style='color: #ffd900'>Rare</span> 등급의 카드<br>테두리나 일러스트에 홀로그램 처리가 되어있는 <br>카드.<br>주로 전설, 환상, 최종진화 포켓몬한테 부여된다.</span>",
+  "<span style='font-size:3VW;'><span style='color: #ffd900'>RR</span> 카드</span><br><span style='font-size:1.3vw;'><br><span style='color: #ffd900'>Rare Rare</span> / <span style='color: #ffd900'>Double Rare</span> 등급의 카드<br>EX, GX, V등 한 시즌의 메인으로 강한 카드에게 <br>부여되는 등급이다.</span>",
+  "<span style='font-size:3VW;'><span style='color: #ffd900'>SR</span> 카드</span><br><span style='font-size:1.3vw;'><br><span style='color: #ffd900'>Super Rare</span> 등급의 카드<br>보통 박스당 0~1장 정도 나오는 카드 캐릭터의 <br>풀 일러스트가 그려져있다.<br>비공식으로 정해진 기준 사이에서는 가장 최소 <br>등급의 레어카드이다.</span>",
+  "<span style='font-size:3VW;'><span style='color: #ffd900'>UR</span> 카드</span><br><span style='font-size:1.3vw;'><br><span style='color: #ffd900'>Ultra Rare</span> 등급의 카드<br>일러스트는 SR과 비슷한 느낌이지만 전체적으로 <br>금색이다.<br>나올 확률이 가장 낮은 등급의 카드로 카드팩에도 <br>적혀있지 않은 등급이다.</span>",
+  "<span style='font-size:3VW;'><span style='color: #ffd900'>AR</span> 카드</span><br><span style='font-size:1.3vw;'><br><span style='color: #ffd900'>Art Rare</span> 등급의 카드<br>말 그대로 아트 배경이있는 풀일러스트의 카드<br>보통 박스당 3~4장 정도 나온다.</span>",
+  "<span style='font-size:3VW;'><span style='color: #ffd900'>SAR</span> 카드</span><br><span style='font-size:1.3vw;'><br><span style='color: #ffd900'>Special Art Rare</span> 등급의 카드<br>AR의 상위 등급으로 일러스트의 구성은 AR과 같지만 EX, VSTAR등 강한카드에 부여되며 더 낮은확률의 카드로 보통 박스당 0~1장 정도 나온다. <br>비공식적으로는 특일(특별한 일러스트) 카드라고 <br>불리고있다.</span>",
+  "<span style='font-size:3VW;'><span style='color: #ffd900'>S</span> 카드</span><br><span style='font-size:1.3vw;'><br><span style='color: #ffd900'>Shiny</span> 등급의 카드<br>색이 다른 포켓몬(이로치)에게 부여되는 등급이다.<br>따로 색이 다른 포켓몬(이로치)를 메인으로 하는 <br>특정 카드팩에서 나온다.</span>",
+  "<span style='font-size:3VW;'><span style='color: #ffd900'>SSR</span> 카드</span><br><span style='font-size:1.3vw;'><br><span style='color: #ffd900'>Shining Super Rare</span> 등급의 카드<br>S등급 색이 다른 포켓몬(이로치)의 SR 버전이다.<br>해당 등급도 색이 다른 포켓몬(이로치)를 메인으로 하는 특정 카드팩에서 나온다.</span>",
+  "<span style='font-size:3VW;'><span style='color: #ffd900'>K</span> 카드</span><br><span style='font-size:1.3vw;'><br><span style='color: #ffd900'>Kagayaku</span> 등급의 카드<br>색이 다른 포켓몬(이로치)를 메인으로하는 팩이 아닌 팩에서 나오는 색이 다른 포켓몬(이로치)카드에게 <br>부여되는 등급이다.<br>이름앞에 &quot;찬란한&quot; 이라는 칭호가 붙는다</span>"
+];
+
+let currentIndex = 0;
+let isDoorOpened = false;
+let descriptionShown = false;
+
+// 문 클릭 → 문 열고 첫 카드 표시
+wrapper.addEventListener('click', () => {
+  if (isDoorOpened) return;
+  isDoorOpened = true;
+
+  wrapper.classList.add('open');
+
+  setTimeout(() => {
+    showCard(currentIndex);
+  }, 300);
+
+  setTimeout(() => {
+    arowL.classList.add('show-ui');
+    arowR.classList.add('show-ui'); 
+  }, 1500);
+});
+
+// ✅ 카드 클릭 이벤트 제거됨
+
+// ✅ 오른쪽 화살표 클릭 시 다음 카드로 넘어가기
+arowR.addEventListener('click', () => {
+  if (currentIndex >= cards.length - 1) return; // ✅ 마지막 카드면 멈춤
+
+  const card = cards[currentIndex];
+
+  descriptionBox.classList.remove('fade-in');
+  card.classList.remove('active');
+  card.classList.add('dismiss');
+
+  currentIndex++;
+
+  setTimeout(() => {
+    showCard(currentIndex);
+  }, 500);
+});
+
+const arowL = document.getElementById('arowL'); // ✅ 왼쪽 화살표 가져오기
+
+if (arowL) {
+  arowL.addEventListener('click', () => {
+    if (currentIndex <= 0) return;
+
+    const currentCard = cards[currentIndex];
+    currentCard.classList.remove('active');
+    currentCard.classList.remove('dismiss');
+
+    currentIndex--;
+
+    const prevCard = cards[currentIndex];
+    prevCard.classList.remove('dismiss');
+    prevCard.classList.add('active');
+    prevCard.style.transform = 'translate(-30vw, -50%)';
+
+    descriptionBox.innerHTML = descriptions[currentIndex] || "설명이 없습니다.";
+    descriptionBox.classList.add('fade-in');
+    descriptionBox.style.opacity = 1;
+
+    updateArrowState(); // ✅ 여기도!
+  });
+}
+ 
+
+function showCard(index) {
+  if (index >= cards.length) {
+    descriptionBox.classList.remove('fade-in');
+    descriptionBox.style.opacity = 0;
+
+    const mainContent = document.getElementById('mainContent');
+    if (mainContent) {
+      setTimeout(() => {
+        mainContent.style.display = 'none';
+      }, 500);
+    }
+
+    setTimeout(() => {
+      finalScreen.classList.add('show');
+    }, 600);
+
+    return;
+  }
+
+  const card = cards[index];
+  card.classList.remove('dismiss');
+  card.classList.add('active');
+  card.style.transform = 'translate(-30vw, -50%)';
+
+  descriptionBox.innerHTML = descriptions[index] || "설명이 없습니다.";
+
+  if (!descriptionShown) {
+    descriptionBox.classList.add('fade-in');
+    descriptionShown = true;
+  } else {
+    descriptionBox.style.opacity = 1;
+  }
+
+  
+  updateArrowState(); // ✅ 이거 추가!
+}
+ 
+
+// 화살표 흐리게 처리
+if (currentIndex === 0) {
+  arowL.classList.add('dimmed');
+} else {
+  arowL.classList.remove('dimmed');
+}
+
+if (currentIndex === cards.length - 1) {
+  arowR.classList.add('dimmed');
+} else {
+  arowR.classList.remove('dimmed');
+}
+
+window.addEventListener('load', () => {
+  const referenceCard = document.querySelector('.content-box');
+  const finalCards = document.querySelectorAll('.final-card');
+
+  if (referenceCard) {
+    const rect = referenceCard.getBoundingClientRect();
+    finalCards.forEach(card => {
+      card.style.width = rect.width + 'px';
+      card.style.height = rect.height + 'px';
+    });
+  }
+});
+
+function updateArrowState() {
+  if (currentIndex === 0) {
+    arowL.classList.add('dimmed');
+  } else {
+    arowL.classList.remove('dimmed');
+  }
+
+  if (currentIndex === cards.length - 1) {
+    arowR.classList.add('dimmed');
+  } else {
+    arowR.classList.remove('dimmed');
+  }
+}
+
+
+
+</script>
+</body>

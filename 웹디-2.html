@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+   <meta charset="UTF-8">
+  <style>
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #111;
+      color: white;
+      font-family: sans-serif;
+    }
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  width: 100%;   /* 100vw 대신 100% */
+  height: 50px;
+  background-color: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 20px;
+  box-sizing: border-box;
+  z-index: 999;
+}
+  nav ul {
+          list-style-type: none;
+          padding: 0;
+          opacity: 1;
+      }
+      .nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+}
+
+  .nav-left li, .nav-right li {
+      list-style-type: none;
+      margin-right: 10px;
+      color: white;
+  }
+
+  .nav-left li a, .nav-right li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+  }
+
+  .nav-left li a:hover,
+  .nav-right li a:hover {
+      text-decoration: underline;
+      color: white;
+  }
+  .nav-left img {
+  width: 40px;
+  height: auto;
+  }
+
+  .nav-left li img {
+  height: 40px; /* 기존 이미지 크기 유지 */
+  cursor: pointer;
+}
+
+/* 가운데 이미지 (새로 추가) */
+.nav-center-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 44px;  /* 50px - 3px*2 해서 살짝 작게 */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.nav-center-logo img {
+  height: 100%;
+  display: block;
+}
+  .sidebar {
+          position: fixed;
+          top: 0;
+          left: -300px;  /* 사이드바를 화면 밖으로 숨김 */
+          width: 300px;
+          height: 100%;
+          background-color: rgba(24, 24, 24, 0.9);
+          color: white;
+          transition: left 0.3s ease;  /* 슬라이드 효과 */
+          padding-top: 20px;
+          z-index: 1000;
+      }
+
+      .sidebar a:first-of-type {
+          margin-top: 40px;
+          border-top: 1px solid rgb(185, 185, 185);
+      }
+
+      .sidebar a {
+          color: white;
+          text-decoration: none;
+          padding: 10px;
+          padding-left: 20px;
+          display: block;
+          font-size: 20px;
+          border-bottom: 1px solid rgb(185, 185, 185);
+      }
+
+      .sidebar a:hover {
+          background-color: #575757;
+      }
+
+      /* 사이드바를 열 때 */
+      .sidebar.open {
+          left: 0;  /* 화면으로 사이드바를 슬라이드 */
+      }
+
+      /* 사이드바 닫기 버튼 */
+      .close-btn {
+          position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 30px;
+          color: white;
+          cursor: pointer;
+      }
+
+      
+    .stat {
+      position: absolute;
+  top:28%;
+  left: 20%; 
+  width: 65vw;
+  overflow: hidden;
+  height: 60vh;
+  z-index: 0;
+  cursor: pointer;
+
+    }
+
+    .box1 {
+  position: absolute;
+  top: 9%;
+  left: 9%;
+  width: 15vw;
+  height: auto; 
+  z-index: 1;
+}
+
+.box2 {
+  position: absolute;
+  top: 49%;
+  left: 20%;
+  width: 16vw;
+  height: auto;  
+  z-index: 2; /* 더 높은 z-index → 위에 보임 */
+}
+
+.box3 {
+  position: absolute;
+  top: 45%;
+  left: 33%;
+  width: 40vw;
+  height: auto;  
+  z-index: 1; /* 더 높은 z-index → 위에 보임 */
+}
+
+.box4 {
+    position: absolute;
+  top: 75%;
+  left: 16%;
+  width: 5vw;
+  height: auto;  
+  z-index: 3; /* 더 높은 z-index → 위에 보임 */ 
+}
+
+.box5 {
+  position: absolute;
+  top: 59%;
+  left: 3%;
+  width: 10vw;
+  height: auto;  
+  z-index: 2; /* 더 높은 z-index → 위에 보임 */ 
+}
+
+.box6 {
+  position: absolute;
+  top: 1%;
+  left: 31%;
+  width: 19vw;
+  height: auto;
+  z-index: 1; /* 더 높은 z-index → 위에 보임 */ 
+}
+
+.tooltip {
+  position: absolute;
+  top: 100px; /* 원하는 고정 높이 (또는 %나 vw 단위로도 가능) */
+  left: 0;
+  transform: translateX(-50%);
+  background-color: rgba(60, 60, 60, 0.95);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 200px;
+  z-index: 9999;
+  display: none;
+  pointer-events: none;
+  text-align: center;
+}
+
+.tooltip img {
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.tooltip-text {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+ 
+
+
+
+
+      
+        </style>
+</head>
+<body>
+<nav>
+      <div class="nav">
+          <ul class="nav-left">
+              <li><img src="포켓몬 카드/삼짝.png"alt="Logo" onclick="toggleSidebar()"></li>
+          </ul>
+          
+          <a href="./웹디자인.html" class="nav-center-logo">
+      <img src="포켓몬 카드/logo.png" alt="Center Logo">
+    </a>
+
+    <ul class="nav-right">
+      <!-- 기존 오른쪽 메뉴들 -->
+    </ul>
+
+      </div>
+  </nav>
+  
+    <div id="sidebar" class="sidebar">
+        <span class="close-btn" onclick="toggleSidebar()">&times;</span>
+        <a href="./웹디-0 복사본.html" >1</a>
+      <a href="./웹디-1.html">2</a>
+      <a href="./웹디-2.html">3</a>
+      <!--<a href="./tst/Untitled-3.html">4</a>-->
+    </div>
+
+    <section style="margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+    background-color:#272727;">
+
+    <div class="stat">
+ 
+<div class="box1"><img src="포켓몬 카드/41A0S3Kp4_L.png" alt="" 
+  style="width:  100%;
+  height: 100%;  
+    background-position: center;
+     object-fit: contain;"></div>
+<div class="box2"><img src="포켓몬 카드/41A0S3Kp3_L.png" alt="" 
+  style="width:  100%;
+  height: 100%;  
+    background-position: center;
+     object-fit: contain;"></div>
+<div class="box3"><img src="포켓몬 카드/75fc5115-0d80-4b8b-ae35-c4f8fcfc2370.png" alt="" 
+  style="width:  100%;
+  height: 100%;  
+    background-position: center;
+     object-fit: contain;"></div>
+<div class="box4"><img src="포켓몬 카드/코인.png" alt="" 
+  style="width:  100%;
+  height: 100%;  
+    background-position: center;
+     object-fit: contain;"></div>
+<div class="box5"><img src="포켓몬 카드/데미지 카운터2.png" alt="" 
+  style="width:  100%;
+  height: 100%;  
+    background-position: center;
+     object-fit: contain;"></div>
+<div class="box6"><img src="포켓몬 카드/덱실드1.png" alt="" 
+  style="width:  100%;
+  height: 100%;  
+    background-position: center;
+     object-fit: contain;"></div>
+        
+    </div>
+
+
+
+    </section>
+
+    <div class="tooltip" id="tooltip">
+  <img src="이미지링크" alt="설명 이미지">
+  <p class="tooltip-text"></p>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+
+<script>
+  // 사이드바 열기/닫기
+  function toggleSidebar() {
+    var sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("open");
+  }
+
+  
+document.addEventListener("click", function (e) {
+  const sidebar = document.getElementById("sidebar");
+  const navIcon = document.querySelector(".nav-left img");
+
+  if (!sidebar.contains(e.target) && !navIcon.contains(e.target)) {
+    sidebar.classList.remove("open");
+  }
+});
+
+gsap.utils.toArray(".stat").forEach(wrapper => {
+  gsap.fromTo(wrapper, 
+    { opacity: 0, y: 100 },
+    {
+      scrollTrigger: {
+        trigger: wrapper,
+        start: "top 80%",
+        toggleActions: "play reverse play reverse",
+      },
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power2.out"
+    });
+});
+const tooltip = document.getElementById("tooltip");
+
+function showTooltip(e, imageUrl, contentHTML) {
+  const tooltip = document.getElementById("tooltip");
+  tooltip.innerHTML = contentHTML;
+  tooltip.style.display = "block";
+  moveTooltip(e);
+}
+
+function moveTooltip(e) {
+  const tooltipRect = tooltip.getBoundingClientRect();
+  const offsetY = 20; // 마우스보다 위로 띄우는 거리 (너무 높지 않게)
+
+  let left = e.pageX + 10;
+  let top = e.pageY - tooltipRect.height - offsetY;
+
+  // 오른쪽 끝나면 넘치지 않도록 조정
+  const maxRight = window.innerWidth - tooltipRect.width - 20;
+  if (left > maxRight) left = maxRight;
+
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top}px`;
+}
+
+function hideTooltip() {
+  document.getElementById('tooltip').style.display = 'none';
+}
+
+function hideTooltip() {
+  tooltip.style.display = "none";
+}
+document.querySelector(".box1").addEventListener("mouseover", (e) => {
+  const content = `
+    <div style="color: #ffd900; font-size: 1.2rem; font-weight: bold;">덱케이스</div>
+    <div style="font-size: 0.9rem;">
+      <br>게임을 플레이할 떄 사용할 <br>60장, 30장 덱을 보관하는 용도입니다.
+  `;
+  showTooltip(e, null, content); // 이미지 없이 텍스트만
+});
+document.querySelector(".box1").addEventListener("mousemove", moveTooltip);
+document.querySelector(".box1").addEventListener("mouseout", hideTooltip);
+
+
+document.querySelector(".box2").addEventListener("mouseover", (e) => {
+  const content = `
+    <div style="color: #ffd900; font-size: 1.2rem; font-weight: bold;">틴케이스</div>
+    <div style="font-size: 0.9rem;">
+      <br>게임을 플레이할 떄 필요한<br>코인이나 데미지 카운터를 <br>보관하는 용도입니다.
+    </div>
+  `;
+  showTooltip(e, null, content); // 이미지 없이 텍스트만
+});
+document.querySelector(".box2").addEventListener("mousemove", moveTooltip);
+document.querySelector(".box2").addEventListener("mouseout", hideTooltip);
+
+document.querySelector(".box3").addEventListener("mouseover", (e) => {
+  const content = `
+    <div style="color: #ffd900; font-size: 1.2rem; font-weight: bold;">매트</div>
+    <div style="font-size: 0.9rem;">
+      <br>카드를 배치할 위치를 알려주는 매트 입니다.<br>이미 배치를 외웠다면 그냥 <br>장식용이기에 선택사항 입니다.
+    </div>
+  `;
+  showTooltip(e, null, content); // 이미지 없이 텍스트만
+});
+document.querySelector(".box3").addEventListener("mousemove", moveTooltip);
+document.querySelector(".box3").addEventListener("mouseout", hideTooltip);
+
+document.querySelector(".box4").addEventListener("mouseover", (e) => {
+  const content = `
+    <div style="color: #ffd900; font-size: 1.2rem; font-weight: bold;">동전/코인</div>
+    <div style="font-size: 0.9rem;">
+      <br>게임 플레이시 '동전을 던저' <br>라는 문구의 기술이나 카드들을 <br>사용할 때 필요한 도구입니다.
+    </div>
+  `;
+  showTooltip(e, null, content); // 이미지 없이 텍스트만
+});
+document.querySelector(".box4").addEventListener("mousemove", moveTooltip);
+document.querySelector(".box4").addEventListener("mouseout", hideTooltip);
+
+document.querySelector(".box5").addEventListener("mouseover", (e) => {
+  const content = `
+    <div style="color: #ffd900; font-size: 1.2rem; font-weight: bold;">데미지 카운터</div>
+    <div style="font-size: 0.9rem;">
+      <br>게임 플레이시 서로의 포켓몬이 <br>얼마나 데미지를 입었는지 <br>표시하는 도구입니다.
+    </div>
+  `;
+  showTooltip(e, null, content); // 이미지 없이 텍스트만
+});
+document.querySelector(".box5").addEventListener("mousemove", moveTooltip);
+document.querySelector(".box5").addEventListener("mouseout", hideTooltip);
+
+document.querySelector(".box6").addEventListener("mouseover", (e) => {
+  const content = `
+    <div style=" color: #ffd900; font-size: 1.2rem; font-weight: bold;">덱 실드/슬리브</div>
+    <div style="font-size: 0.9rem;">
+      <br>카드에 씌워 카드를 보호하는<br>도구입니다.<br>대회 참여시 필수사항입니다.<br>뒷면이 불투명한걸 사용합니다.
+    </div>
+  `;
+  showTooltip(e, null, content); // 이미지 없이 텍스트만
+});
+document.querySelector(".box6").addEventListener("mousemove", moveTooltip);
+document.querySelector(".box6").addEventListener("mouseout", hideTooltip);
+
+
+</script>
+</body>

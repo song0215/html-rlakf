@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+   <meta charset="UTF-8">
+  <style>
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #111;
+      color: white;
+      font-family: sans-serif;
+    }
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  width: 100%;   /* 100vw 대신 100% */
+  height: 50px;
+  background-color: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 20px;
+  box-sizing: border-box;
+  z-index: 999;
+}
+  nav ul {
+          list-style-type: none;
+          padding: 0;
+          opacity: 1;
+      }
+      .nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+}
+
+  .nav-left li, .nav-right li {
+      list-style-type: none;
+      margin-right: 10px;
+      color: white;
+  }
+
+  .nav-left li a, .nav-right li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+  }
+
+  .nav-left li a:hover,
+  .nav-right li a:hover {
+      text-decoration: underline;
+      color: white;
+  }
+  .nav-left img {
+  width: 40px;
+  height: auto;
+  }
+
+  .nav-left li img {
+  height: 40px; /* 기존 이미지 크기 유지 */
+  cursor: pointer;
+}
+
+/* 가운데 이미지 (새로 추가) */
+.nav-center-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 44px;  /* 50px - 3px*2 해서 살짝 작게 */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.nav-center-logo img {
+  height: 100%;
+  display: block;
+}
+  .sidebar {
+          position: fixed;
+          top: 0;
+          left: -300px;  /* 사이드바를 화면 밖으로 숨김 */
+          width: 300px;
+          height: 100%;
+          background-color: rgba(24, 24, 24, 0.9);
+          color: white;
+          transition: left 0.3s ease;  /* 슬라이드 효과 */
+          padding-top: 20px;
+          z-index: 5000;
+      }
+
+      .sidebar a:first-of-type {
+          margin-top: 40px;
+          border-top: 1px solid rgb(185, 185, 185);
+      }
+
+      .sidebar a {
+          color: white;
+          text-decoration: none;
+          padding: 10px;
+          padding-left: 20px;
+          display: block;
+          font-size: 20px;
+          border-bottom: 1px solid rgb(185, 185, 185);
+      }
+
+      .sidebar a:hover {
+          background-color: #575757;
+      }
+
+      /* 사이드바를 열 때 */
+      .sidebar.open {
+          left: 0;  /* 화면으로 사이드바를 슬라이드 */
+      }
+
+      /* 사이드바 닫기 버튼 */
+      .close-btn {
+          position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 30px;
+          color: white;
+          cursor: pointer;
+      }
+
+
+
+      
+  .section2 {
+    background-color: #222;
+  }
+
+  .section3 {
+    background-color: #111;
+    height: 50px;
+  }
+
+  html, body {
+      scroll-behavior: auto;
+    }
+
+    .floating-wrapper {
+      position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 35vw;
+  overflow: hidden;
+  max-height: 100%;
+  z-index: 2000;
+  cursor: pointer;
+
+    }
+
+
+.center-image {
+   max-height: 60vh;
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  pointer-events: auto;
+}
+
+.card-transform {
+ position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  /* ✅ 이제 별도 크기 설정 */
+  width: 30.2vw;
+  height: calc(30vw * 1.4);  /* 카드 비율 (예: 세로형) */
+  
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2001;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateZ(0deg) rotateY(0deg);
+}
+
+.card-face {
+  position: absolute;
+  backface-visibility: hidden;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.card-face.back {
+  transform: rotatex(180deg); /* 뒷면은 처음부터 뒤집혀 있음 */
+}
+
+.cdcheck {  
+  position: absolute;top:50%; left:50%; transform:translate(-50%,-50%);
+  width: 23vw;            /* floating-wrapper와 동일하게 설정 */
+  height: 31vw;
+  max-width: 100%;
+  opacity: 0.5; 
+  z-index: 2001;  
+  position: relative;
+  
+  opacity: 0;
+  pointer-events: none; 
+}
+
+.cdcheck.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cdcheck-cel
+{
+  position: absolute;
+  transform: translateX(-50%);
+ border-radius: 30px;
+ margin: 0;
+    padding: 0;
+  border: 4px solid rgb(255, 217, 0);
+  
+  background-color: transparent;
+  transition: background-color 0.4s ease;
+  
+}
+.cdcheck-cel:hover {
+  background-color: rgba(17, 17, 17, 0.5); /* #111 with opacity 0.5 */
+}
+
+.rcard {
+  position: absolute;
+   top:50.33%; 
+   left:50%; 
+   transform:translate(-50%,-50%);
+   width: 21.72vw;  
+   height: auto;
+  max-width: 100%;
+  opacity: 0; 
+  z-index: 2001;
+  pointer-events: none;
+}
+
+.rcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+   display: table-cell
+}
+
+.rcard-img img {
+  width:  100%;
+  height: 100%; 
+    background-repeat: no-repeat;
+    background-position: center;
+     object-fit: contain;
+}
+      
+  </style>
+  
+</head>
+<body>
+
+<nav>
+      <div class="nav">
+          <ul class="nav-left">
+              <li><img src="포켓몬 카드/삼짝.png"alt="Logo" onclick="toggleSidebar()"></li>
+          </ul>
+          
+          <a href="./웹디자인.html" class="nav-center-logo">
+      <img src="포켓몬 카드/logo.png" alt="Center Logo">
+    </a>
+
+    <ul class="nav-right">
+      <!-- 기존 오른쪽 메뉴들 -->
+    </ul>
+
+      </div>
+  </nav>
+
+  <div id="sidebar" class="sidebar">
+      <span class="close-btn" onclick="toggleSidebar()">&times;</span>
+      <a href="./웹디-0 - 복사본.html" >1</a>
+      <a href="./웹디-1.html">2</a>
+      <a href="./웹디-2.html">3</a>
+      <!--<a href="./tst/Untitled-3.html">4</a>-->
+  </div>
+
+  <script>
+      // 사이드바 열기/닫기 함수
+      function toggleSidebar() {
+          var sidebar = document.getElementById("sidebar");
+          sidebar.classList.toggle("open");
+      }
+  </script>
+
+  
+  
+<section style="margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+    background-color:#575757;">
+  <div class="floating-wrapper" id="floatingWrapper">
+    <img class="center-image" src="포켓몬 카드/덱1.png" alt="이미지">
+  </div>
+<div class="card-transform" id="cardTransform">
+  <div class="card-inner">
+    <img class="card-face front" src="포켓몬 카드/1_3.1.png" alt="앞면">
+    <img class="card-face back" src="포켓몬 카드/SV5a_050.png" alt="뒷면">
+  </div>
+</div>
+<div class="rcard">
+  <div class="rcard-inner">
+    <div class="rcard-img">
+         <img src="포켓몬 카드/SV5a_050 -1.png" alt="앞면">
+    </div>
+  </div>
+</div>
+
+</section>
+
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<script>
+  
+  let initialState = {};
+const initialStyles = {};
+  
+  if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 0);
+    });
+  
+
+gsap.utils.toArray(".atitel").forEach(section => {
+  gsap.fromTo(section, 
+  { opacity: 0, y: 100 },
+    {
+      scrollTrigger: {
+        trigger: section,
+        start: "top 63%",
+        toggleActions: "play reverse play reverse",
+      },
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power2.out"
+    });
+});
+
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.utils.toArray(".floating-wrapper").forEach(wrapper => {
+  gsap.fromTo(wrapper, 
+    { opacity: 0, y: 100 },
+    {
+      scrollTrigger: {
+        trigger: wrapper,
+        start: "top 80%",
+        toggleActions: "play reverse play reverse",
+      },
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power2.out"
+    });
+});
+
+document.addEventListener("click", function (e) {
+  const sidebar = document.getElementById("sidebar");
+  const navIcon = document.querySelector(".nav-left img");
+
+  if (!sidebar.contains(e.target) && !navIcon.contains(e.target)) {
+    sidebar.classList.remove("open");
+  }
+});
+
+gsap.utils.toArray("#text").forEach(section => {
+  gsap.fromTo(section, 
+    { opacity: 0, y: 100 },
+    {
+      scrollTrigger: {
+        trigger: section,
+        start: "top 90%",
+        toggleActions: "play reverse play reverse",
+      },
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power2.out"
+    });
+});
+const text = document.getElementById("text");
+
+
+
+setTimeout(() => {
+        gsap.to(".title", {
+          opacity: 1,
+          y:0,
+          duration: 1,
+          ease: "power2.out"
+        });
+      }, 400);
+
+      const centerImage = document.querySelector(".center-image");
+
+const wrapper = document.getElementById("floatingWrapper");
+const image = document.querySelector(".center-image");
+
+   const floatingWrapper = document.getElementById("floatingWrapper");
+
+   document.addEventListener("DOMContentLoaded", () => {
+    const floatingWrapper = document.getElementById("floatingWrapper");
+const cardTransform = document.getElementById("cardTransform");
+ 
+const cardInner = cardTransform.querySelector('.card-inner');
+floatingWrapper.addEventListener("click", () => {
+  const rect = floatingWrapper.getBoundingClientRect();
+  const startX = rect.left + rect.width / 2;
+  const startY = rect.top + rect.height / 2 -100;
+
+  cardTransform.style.left = `${startX}px`;
+  cardTransform.style.top = `${startY}px`;
+  cardTransform.style.opacity = 1;
+  cardTransform.style.pointerEvents = "auto";
+
+  gsap.to(floatingWrapper, {
+    y: 200,
+    opacity: 0,
+    duration: 0.5,
+    ease: "power2.in",
+    onComplete: () => {
+      floatingWrapper.style.display = "none";
+
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+
+      // 카드 위치 중앙으로 이동
+      gsap.to(cardTransform, {
+        duration: 0.7,
+        left: `${centerX}px`,
+        top: `${centerY}px`,
+        ease: "power2.out",
+        onComplete: () => {
+          // 1단계: Y축 기준으로 가로세로 뒤집는 회전 (rotateZ)
+          gsap.to(cardInner, {
+            duration: 0.7,
+            rotateZ: -90,
+            ease: "power2.inOut",
+            onComplete: () => {
+              // 0.4초 후에 Z축 기준으로 뒷면 보이게 (rotateY)
+              setTimeout(() => {
+                gsap.to(cardInner, {
+                  duration: 0.7,
+                  rotateX: 180,
+                  ease: "power2.inOut",
+                    onComplete: () => {
+    // rcard 바로 나타나기
+    const rcard = document.querySelector(".rcard");
+rcard.style.opacity = 1;
+rcard.style.pointerEvents = "auto";
+
+// cdcheck 애니메이션 (0.5초 후에 opacity 1로)
+setTimeout(() => {
+ window.location.href = "./웹디-0.1.html";
+}, 100);
+  }
+                });
+              }, 100);
+              
+            }
+          });
+        }
+      });
+    }
+  });
+});
+  }); 
+    </script>
+  
+</body>

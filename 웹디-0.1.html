@@ -1,0 +1,1980 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+   <meta charset="UTF-8">
+  <style>
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #111;
+      color: white;
+      font-family: sans-serif;
+    }
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  width: 100%;   /* 100vw 대신 100% */
+  height: 50px;
+  background-color: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 20px;
+  box-sizing: border-box;
+  z-index: 999;
+}
+  nav ul {
+          list-style-type: none;
+          padding: 0;
+          opacity: 1;
+      }
+      .nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+}
+
+  .nav-left li, .nav-right li {
+      list-style-type: none;
+      margin-right: 10px;
+      color: white;
+  }
+
+  .nav-left li a, .nav-right li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+  }
+
+  .nav-left li a:hover,
+  .nav-right li a:hover {
+      text-decoration: underline;
+      color: white;
+  }
+  .nav-left img {
+  width: 40px;
+  height: auto;
+  }
+
+  .nav-left li img {
+  height: 40px; /* 기존 이미지 크기 유지 */
+  cursor: pointer;
+}
+
+/* 가운데 이미지 (새로 추가) */
+.nav-center-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 44px;  /* 50px - 3px*2 해서 살짝 작게 */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.nav-center-logo img {
+  height: 100%;
+  display: block;
+}
+  .sidebar {
+          position: fixed;
+          top: 0;
+          left: -300px;  /* 사이드바를 화면 밖으로 숨김 */
+          width: 300px;
+          height: 100%;
+          background-color: rgba(24, 24, 24, 0.9);
+          color: white;
+          transition: left 0.3s ease;  /* 슬라이드 효과 */
+          padding-top: 20px;
+          z-index: 5000;
+      }
+
+      .sidebar a:first-of-type {
+          margin-top: 40px;
+          border-top: 1px solid rgb(185, 185, 185);
+      }
+
+      .sidebar a {
+          color: white;
+          text-decoration: none;
+          padding: 10px;
+          padding-left: 20px;
+          display: block;
+          font-size: 20px;
+          border-bottom: 1px solid rgb(185, 185, 185);
+      }
+
+      .sidebar a:hover {
+          background-color: #575757;
+      }
+
+      /* 사이드바를 열 때 */
+      .sidebar.open {
+          left: 0;  /* 화면으로 사이드바를 슬라이드 */
+      }
+
+      /* 사이드바 닫기 버튼 */
+      .close-btn {
+          position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 30px;
+          color: white;
+          cursor: pointer;
+      }
+
+
+
+      
+  .section2 {
+    background-color: #222;
+  }
+
+  .section3 {
+    background-color: #111;
+    height: 50px;
+  }
+
+  html, body {
+      scroll-behavior: auto;
+    }
+
+    .floating-wrapper {
+      position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 35vw;
+  overflow: hidden;
+  max-height: 100%;
+  z-index: 2000;
+  cursor: pointer;
+
+    }
+
+
+.center-image {
+   max-height: 60vh;
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  pointer-events: auto;
+}
+
+.card-transform {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 35vw;            /* floating-wrapper와 동일하게 설정 */
+  height: auto;
+  max-height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2001;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateZ(0deg) rotateY(0deg);
+}
+
+.card-face {
+  position: absolute;
+  backface-visibility: hidden;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.card-face.back {
+  transform: rotatex(180deg); /* 뒷면은 처음부터 뒤집혀 있음 */
+}
+
+.cdcheck {  
+  position: absolute;top:50%; left:50%; transform:translate(-50%,-50%);
+  width: 23vw;            /* floating-wrapper와 동일하게 설정 */
+  height: 31vw;
+  max-width: 100%;
+  opacity: 0.5; 
+  z-index: 2001;  
+  position: relative;
+  
+  opacity: 0;
+  pointer-events: none; 
+}
+
+.cdcheck.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cdcheck-cel
+{
+  position: absolute;
+  transform: translateX(-50%);
+ border-radius: 30px;
+ margin: 0;
+    padding: 0;
+  border: 4px solid rgb(255, 217, 0);
+  
+  background-color: transparent;
+  transition: background-color 0.4s ease;
+  
+}
+.cdcheck-cel:hover {
+  background-color: rgba(17, 17, 17, 0.5); /* #111 with opacity 0.5 */
+}
+
+.rcard {
+  position: absolute;
+   top:50.33%;
+   left:50%; 
+   transform:translate(-50%,-50%);
+   width: 21.72vw;  
+   height: auto;
+  max-width: 100%;
+  opacity: 1; 
+  z-index: 2001;
+  pointer-events: none;
+
+}
+
+.rcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+   display: table-cell
+}
+
+ .rcard.hide {
+          transition: transform 1s ease, opacity 1s ease;
+      transform: translate(-50%, 150%); /* 아래로 이동 (스크롤 아님) */
+      opacity: 0;
+    }
+
+.rcard-img img {
+  width:  100%;
+  height: 100%; 
+    background-repeat: no-repeat;
+    background-position: center;
+     object-fit: contain;
+}
+
+.ele {
+    position: absolute;
+    top: 0%;
+  width: 100%; 
+  height: 100%;
+  opacity: 0;
+  pointer-events: none; 
+}
+
+.resetBox {
+  opacity: 1;
+  width: 20%;
+  height: 10%;
+  top: 85%;
+  left: 5%;
+  padding: 0;
+  position: absolute; 
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: clamp(2rem, 4vw, 4rem); /* ✅ 반응형 폰트 */
+  line-height: 100%; /* 🔧 중요: 기본 초기화 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+   cursor: pointer;
+  pointer-events: auto; /* ← 이거 중요! */
+}
+
+.resetBox * {
+  pointer-events: auto;
+  font-size: 3.5rem; /* ← 내부 텍스트나 span도 클릭 가능하게 */
+}
+.resetBox span {
+  position: relative;
+  top: -0.1em; /* or -0.2em, 미세 조정 가능 */
+} 
+
+.typ
+{
+  position: absolute;
+    top: 0%;
+  width: 100%; 
+  height: 100%;
+  opacity: 0;
+  pointer-events: none; 
+}
+
+  #onarrow {
+    transition: opacity 0.3s ease;
+  }
+
+  #upcard {
+    transition: z-index 0.3s ease;
+  }
+  
+  .typicon
+{
+  position: absolute;
+  width: 4vw;   
+  height: 4vw; 
+  top:14%; 
+  opacity: 1; 
+  z-index: 2000;
+  pointer-events: auto; 
+}
+  .wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%; /* 원하는 높이 */
+      overflow: hidden; /* 내부 box가 내려가도 스크롤 안 생김 */ 
+      margin-top: 100px; /* body 스크롤 테스트용 */
+    }
+
+    .hpcard
+    {
+      position: absolute;  
+      left:19.5%;  
+      width: 6vw;   
+      height: auto; 
+  opacity: 0; 
+  z-index: 2000; 
+  pointer-events: none;
+    }
+
+    
+
+  </style>
+  
+</head>
+<body>
+
+<nav>
+      <div class="nav">
+          <ul class="nav-left">
+              <li><img src="포켓몬 카드/삼짝.png"alt="Logo" onclick="toggleSidebar()"></li>
+          </ul>
+          
+          <a href="./웹디자인.html" class="nav-center-logo">
+      <img src="포켓몬 카드/logo.png" alt="Center Logo">
+    </a>
+
+    <ul class="nav-right">
+      <!-- 기존 오른쪽 메뉴들 -->
+    </ul>
+
+      </div>
+  </nav>
+
+  <div id="sidebar" class="sidebar">
+      <span class="close-btn" onclick="toggleSidebar()">&times;</span>
+      <a href="./웹디-0 복사본.html" >1</a>
+      <a href="./웹디-1.html">2</a>
+      <a href="./웹디-2.html">3</a>
+      <!--<a href="./tst/Untitled-3.html">4</a>-->
+  </div>
+
+  <script>
+      // 사이드바 열기/닫기 함수
+      function toggleSidebar() {
+          var sidebar = document.getElementById("sidebar");
+          sidebar.classList.toggle("open");
+      }
+  </script>
+
+  
+  
+<section style="margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+    background-color:#575757;"> 
+    <div class="wrapper" style="top: -11%;">
+<div class="rcard" id="rcard">
+  <div class="rcard-inner">
+    <div class="rcard-img">
+         <img src="포켓몬 카드/SV5a_050 -1.png" alt="앞면">
+    </div>
+  </div>
+</div>
+<div class="cdcheck">
+<div class="cdcheck-cel" id="evo" style=" height: 4vh; width: 4.3vw;  top: 1.9%; left: 13%;">
+</div>
+<div class="cdcheck-cel" id="hp" style=" height: 4vh; width: 3vw;  top: 3.6%; left: 79%;">
+</div>
+  <div class="cdcheck-cel" id="ty" style=" height: 3.7vh; width: 1.7vw;  top: 3.6%; left: 89.1%;">
+</div>
+<div class="cdcheck-cel" id="at" style=" height: 17vh; width: 20vw;  top: 54.4%; left: 50%;">
+</div>
+ <div class="cdcheck-cel" id="weak" style=" height: 2vh; width: 4.6vw;  top: 84.6%; left: 17.7%;">
+</div>
+<div class="cdcheck-cel" id="ret" style=" height: 2vh; width: 5vw;  top: 84.6%; left: 71%;">
+</div>
+<div class="cdcheck-cel" id="reg" style=" height: 2.5vh; width: 1vw;  top: 91.6%; left: 9.5%;">
+</div>
+</div>
+
+<div class="ele" style="opacity: 0;" id="evoel">
+<div style="position: absolute;
+   top:19.55%; 
+   left:14.1%; 
+   width: 21.72vw;  
+   height: auto; 
+  opacity: 0; 
+  z-index: 2000;
+  pointer-events: none;" id="nim">
+  <img src="포켓몬 카드/SV8a_068.png" alt="" 
+  style="width:  100%;
+  height: 100%;  
+    background-position: center;
+     object-fit: contain;">
+</div>
+
+<div id="eveexp" style="position: absolute; 
+padding: 3%; padding-top: 2%;
+   top:35%; 
+   left:42%; 
+   width: 46%;  
+   height: 45%; 
+  opacity: 0; 
+   border-radius: 15px;
+  z-index: 2000;
+  font-size: 1.4rem;
+  background-color: #353535;">
+  <h1>진화</h1>
+  포켓몬중 진화하는 포켓몬도 있습니다<br>
+포켓몬 카드는 <font color="#ffd900">기본 포켓몬</font> 을 먼저 필드에 내려놔야 합니다. 이후 기본 포켓몬 위에 차례대로 <br><font color="#ffd900">1진화</font>,  <font color="#ffd900">2진화</font>로 진화합니다.<br>
+진화 전 단계는 진화 마크 아래 동그라미에 진화 전 포케몬이 그려져 있습니다<br>
+기본포켓몬을 내려놓은 다음 <font color="#ffd900"> 한 차례가 넘어갈때마다 한번씩 진화</font>할 수<br>있습니다.<br>
+포켓몬을 내려놓은 차례에 바로 진화지킬수 없습니다. 하지만 같은 차례의<br>여러마리의 다른 포켓몬들을 진화시킬 순 있습니다
+</div>
+<div style="position: absolute; top:1%;  left:48%;  width: 9vw;   height: auto; 
+  opacity: 0; 
+  z-index: 2000;
+  pointer-events: none;" id="nya1">
+  <img src="포켓몬 카드/SVP2_001.png" alt="" 
+  style="width:  100%;
+  height: 100%;  
+    background-position: center;
+     object-fit: contain;">
+</div>
+<div style="position: absolute; top:1%;  left:63%; width: 9vw;   height: auto; 
+  opacity: 0; 
+  z-index: 2000;
+  pointer-events: none;" id="nya2">
+  <img src="포켓몬 카드/SVAM_005_M.png" alt="" 
+  style="width:  100%;
+  height: 100%;  
+    background-position: center;
+     object-fit: contain;">
+</div>
+<div style="position: absolute; top:1%;  left:78%;  width: 9vw;   height: auto; 
+  opacity: 0; 
+  z-index: 2000;
+  pointer-events: none;" id="nya3">
+  <img src="포켓몬 카드/SVAM_006.png" alt="" 
+  style="width:  100%;
+  height: 100%;  
+    background-position: center;
+     object-fit: contain;">
+</div>
+
+<div style="position: absolute; top:58%;  left:80%; width: 17vw;   height: 17vw; 
+  opacity: 1; 
+  z-index: 2001;
+  pointer-events: auto;  /* 마우스 이벤트 받을 수 있게 수정 */ " id="qjadnl">
+
+   <div style="position: absolute; top:30%;  left:30%; width: 4vw;   height: auto; 
+  opacity: 1; 
+  z-index: 2002;
+  pointer-events: none; " id="onarrow"> 
+  <img src="포켓몬 카드/검덮화.png" alt=""
+      style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+
+  <div style="position: absolute; top:20%; left:5%; width: 9vw; height: auto; 
+    opacity: 1; 
+    z-index: 2000;
+    pointer-events: none; " id="upcard">
+    <img src="포켓몬 카드/SVP2_001.png" alt=""
+      style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+
+  <div style="position: absolute; top:5%; left:45%; width: 9vw; height: auto; 
+    opacity: 1; 
+    z-index: 2001;
+    pointer-events: none; 
+    transition: transform 0.5s ease, z-index 0.3s ease;" id="downcard">
+    <img src="포켓몬 카드/SVAM_005_M.png" alt=""
+      style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+</div>
+
+  <span class="arrow" style=" position: absolute; 
+top:16.8%;  
+left:58.3%;  
+width: 3%;   
+height: 3%; 
+pointer-events: none;
+  opacity: 0;
+  font-size: 4rem;">
+  →
+  </span>
+  <span class="arrow" style=" position: absolute; 
+top:16.8%;  
+left:73.4%;  
+width: 3%;   
+height: 3%; 
+pointer-events: none;
+  opacity: 0;
+  font-size: 4rem;">
+  →
+  </span>
+<div class="resetBox" id="resetBox"><span>	&lt; 뒤로가기</span></div>
+</div>
+
+<div class="typ" style="opacity: 0;" id="typl">
+
+<div id="typxp" style="position: absolute; 
+padding: 3%; padding-top: 2%;
+   top:35%; 
+   left:42%; 
+   width: 45%;  
+   height: 45%; 
+  opacity: 0; 
+  font-size: 1.4rem;
+   border-radius: 15px;
+  z-index: 2000;
+  background-color: #353535;">
+  <h1>타입</h1>
+  각 포켓몬은 <font color="#ffd900">타입</font>을 가지고 있습니다.<br>
+각 포켓몬은 타입에 대한 <font color="#ffd900">약점</font> 또는 <font color="#ffd900">저항력</font>을 가지고 있을 수 있으며 약점은 해당 타입을 가지고 있는 포켓몬한테 공격당하면 해당 기술의 데미지를 <font color="#ffd900">X2</font>하여 계산하며 저항력은 해당 타입에게 공격당할시 해당 기술의 데미지를 적혀있는 수치인 <font color="#ffd900">-30</font>또는 <font color="#ffd900">-20</font> 하여 계산합니다.<br>
+<br> 포켓몬 카드에 현재 존재하는 타입은 <font color="#ffd900">풀</font> | <font color="#ffd900">불꽃</font> | <font color="#ffd900">물</font> | <font color="#ffd900">전기</font> | <font color="#ffd900">초</font> | <font color="#ffd900">격투</font> | <font color="#ffd900">악</font> | <font color="#ffd900">강철</font> | <font color="#ffd900">드래곤</font> | <font color="#ffd900">무색</font> 으로 10가지가 존재합니다.
+</div>
+
+<div style="position: absolute;
+  width: 13vw;   
+  height: auto; 
+  opacity: 0; 
+  z-index: 2003;
+  pointer-events: none; 
+   top:70.5%; left:7%;" id="wjgkd">
+  <img src="포켓몬 카드/저항.png" alt="" style=" 
+  border: 2px solid rgb(255, 217, 0); width: 100%; height: 100%; object-fit: contain; ">
+
+</div>
+
+<div style="position: absolute; width: 6vw;   
+  height: 1.3vw; 
+  opacity: 1; 
+  z-index: 2003;
+  pointer-events: none;
+  border: 3px solid rgb(255, 217, 0); top:72%; left:14.5%;"></div>
+
+<div class="typicon" style="left:43%; " data-text="🌿 풀 타입입니다!" id="typicongr"><img src="포켓몬 카드/타입풀.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:48%; " data-text="🔥 불 타입입니다!" id="typiconbl"><img src="포켓몬 카드/타입불.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:53%; " 
+     data-text="💧 물 타입입니다!" id="typiconwe"><img src="포켓몬 카드/타입물.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:58%; " data-text="⚡ 전기 타입입니다!" id="typiconel"><img src="포켓몬 카드/타입전기.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:63%; " data-text="🔮 초 타입입니다!" id="typicones"><img src="포켓몬 카드/타입에스퍼.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:68%; " data-text="👊 격투 타입입니다!" id="typiconfi"><img src="포켓몬 카드/타입격투.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:73%; " data-text="😎 악 타입입니다!" id="typiconde"><img src="포켓몬 카드/타입악.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:78%; " data-text="⚙ 강철 타입입니다!" id="typiconie"><img src="포켓몬 카드/타입강철.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:83%; " data-text="🐉 드래곤 타입입니다!" id="typiconider"><img src="포켓몬 카드/타입드래곤.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:88%; " data-text="🤍 무색 타입입니다!" id="typiconinon"><img src="포켓몬 카드/타입무색.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div id="tooltip" style="
+  position: absolute;
+  display: none;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  z-index: 9999;
+  white-space: nowrap;
+"></div>
+
+<div class="resetBox" id="resetBox1"><span>	&lt; 뒤로가기</span></div>
+
+</div>
+
+<div class="weak" style="opacity: 0;" id="weakl">
+
+<div id="typxp" style="position: absolute; 
+padding: 3%; padding-top: 2%;
+   top:35%; 
+   left:42%; 
+   width: 45%;  
+   height: 45%; 
+  opacity: 0; 
+   border-radius: 15px;
+  z-index: 2000;
+  background-color: #111;">
+  <h1>진화</h1>
+  이거슨 진화에 대한 설명일겁니다
+</div>
+
+<div style="position: absolute;
+  width: 13vw;   
+  height: auto; 
+  opacity: 0; 
+  z-index: 2003;
+  pointer-events: none; 
+   top:70.5%; left:7%;" id="wjgkd">
+  <img src="포켓몬 카드/저항.png" alt="" style=" 
+  border: 2px solid rgb(255, 217, 0); width: 100%; height: 100%; object-fit: contain; ">
+
+</div>
+
+<div style="position: absolute; width: 6vw;   
+  height: 1.3vw; 
+  opacity: 1; 
+  z-index: 2003;
+  pointer-events: none;
+  border: 3px solid rgb(255, 217, 0); top:72%; left:14.5%;"></div>
+
+<div class="typicon" style="left:43%; " data-text="🌿 풀 타입입니다!" id="typicongr"><img src="포켓몬 카드/타입풀.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:48%; " data-text="🔥 불 타입입니다!" id="typiconbl"><img src="포켓몬 카드/타입불.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:53%; " 
+     data-text="💧 물 타입입니다!" id="typiconwe"><img src="포켓몬 카드/타입물.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:58%; " data-text="⚡ 전기 타입입니다!" id="typiconel"><img src="포켓몬 카드/타입전기.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:63%; " data-text="🔮 에스퍼 타입입니다!" id="typicones"><img src="포켓몬 카드/타입에스퍼.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:68%; " data-text="👊 격투 타입입니다!" id="typiconfi"><img src="포켓몬 카드/타입격투.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:73%; " data-text="😎 악 타입입니다!" id="typiconde"><img src="포켓몬 카드/타입악.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:78%; " data-text="⚙ 강철 타입입니다!" id="typiconie"><img src="포켓몬 카드/타입강철.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:83%; " data-text="🐉 드래곤 타입입니다!" id="typiconider"><img src="포켓몬 카드/타입드래곤.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div class="typicon" style="left:88%; " data-text="🤍 무색 타입입니다!" id="typiconinon"><img src="포켓몬 카드/타입무색.png" alt="" style=" 
+width: 100%; height: 100%; object-fit: contain; "></div>
+
+<div id="tooltip" style="
+  position: absolute;
+  display: none;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  z-index: 9999;
+  white-space: nowrap;
+"></div>
+
+<div class="resetBox" id="resetBox1"><span>	&lt; 뒤로가기</span></div>
+
+</div>
+
+<div class="hp" style="opacity: 0;" id="hpl" >
+  <div class="hpcard" style="top: 16.5%;" id="youcard">
+<img src="포켓몬 카드/SVD_034-1.png" alt=""
+      style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+
+  <div class="hpcard" style="top: 60.5%;" id="mycard">
+<img src="포켓몬 카드/SV5a_050 -1.png" alt=""
+      style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+  <div style=" position: absolute;  
+  top: 12%;
+      left:5.95%;  
+      width: 33vw;   
+      height: auto; 
+  opacity: 1; 
+  z-index: 1999; 
+  pointer-events: none;">
+<img src="포켓몬 카드/배틀필드.jpg" alt=""
+      style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+
+   <div style="position: absolute;  
+  top: 10.3%;
+      left:70%;  
+      width: 9vw;   
+      height: auto; 
+  opacity: 1; 
+  z-index: 1999; 
+  pointer-events: auto;" id="hpexcard">
+<img src="포켓몬 카드/SV5a_050 -1.png" alt=""
+      style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+
+  <div style="position: absolute;  
+  top: 25%;
+      left:54%;  
+      width: 11vw;   
+      height: 3vw; 
+  opacity: 1; 
+  z-index: 2000; 
+  font-size: 1.2rem;
+  pointer-events: none;
+  text-align : center; "> 
+받은 데미지 만큼<br><font color="#ffd900"><strong>데미지 카운터</strong></font>를 올립니다
+  </div>
+
+  <div style="position: absolute;  
+  top: 18.5%;
+      left:55.6%;  
+      width: 1.8vw;   
+      height: auto; 
+  opacity: 1; 
+  z-index: 2003; 
+  transition: transform 0.5s ease, z-index 0.3s ease;
+  pointer-events: none;" id="ten">
+<img src="포켓몬 카드/10.png" alt=""
+      style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+
+  <div id="demca" style="position: absolute;  
+  top: 17%;
+      left:55%;  
+      width: 9vw;   
+      height: auto; 
+  opacity: 1; 
+  z-index: 2000; 
+  pointer-events: auto; " >  
+<img src="포켓몬 카드/뎀카.png" alt=""
+      style="pointer-events: none; width: 100%; height: 100%; object-fit: fill;"> 
+  </div>
+ 
+  <div id="hpxp" style="position: absolute; 
+padding: 3%; padding-top: 2%;
+   top:35%; 
+   left:42%; 
+   width: 45%;  
+   height: 45%; 
+  opacity: 0; 
+   border-radius: 15px;
+   font-size: 1.4rem;
+  z-index: 2000;
+  background-color: #353535;">
+  <h1>체력</h1>
+  대전시 서로의 포켓몬이 한마리씩 나와 싸우게 됩니다.<br>
+오른쪽 윗쪽의 수치가 체력이며 서로 한차례씩 넘어가며 진행하게됩니다. 이때 공격을 할 수 있으며 사용한 기술의 데미지만큼 체력이 차감됩니다<br>
+받은 데미지는 해당 포켓몬 카드 위에 <font color="#ffd900">데미지카운터</font>를 올려놓습니다.<br>
+받은 데미지가 해당 포켓몬의 체력을 넘어가 <font color="#ffd900">체력이 0이되면 해당 포켓몬은 기절</font>하게 됩니다.<br>
+기절한 포켓몬은 트레쉬로 버려지게되며 상대는 점수를 획득하게됩니다.
+</div>
+  
+<div class="resetBox" id="resetBox2"><span>	&lt; 뒤로가기</span></div>
+</div>
+
+<div class="at" style="opacity: 0;" id="atl" >
+
+
+   <div style="position: absolute;
+   top: 51%;
+   left:5%;  
+   width: 20vw;  
+   height: auto;
+  max-width: 100%;
+  opacity: 0; 
+  z-index: 2003; 
+  pointer-events: none;" id="atexcard"> 
+<img src="포켓몬 카드/SV5a_050 -2.png" alt=""
+      style="border: 3px solid rgb(255, 217, 0); width: 100%; height: 100%; object-fit: contain;">
+
+  </div>
+
+  <div style="position: absolute;
+   top: 21%;
+   left:15.15%;  
+   width: 21.7vw;  
+   height: auto;
+  max-width: 100%;
+  opacity: 0; 
+  z-index: 1999; 
+  pointer-events: none;" id="eveeng"> 
+<img src="포켓몬 카드/SVN_046.png" alt=""
+      style=" width: 100%; height: 100%; object-fit: contain;">
+  </div>
+
+    <div style="position: absolute;
+   top: 21%;
+   left:15.15%;  
+   width: 21.7vw;  
+   height: auto;
+  max-width: 100%;
+  opacity: 0; 
+  z-index: 1998; 
+  pointer-events: none;" id="eveenbl"> 
+<img src="포켓몬 카드/SVN_047.png" alt=""
+      style=" width: 100%; height: 100%; object-fit: contain;">
+  </div> 
+
+  <div id="engger" style="position: absolute; 
+  top:5.7%;  left:42%; 
+  width: 7.5vw; height: auto;  opacity: 0;  z-index: 2000;  pointer-events: none;">
+  <img src="포켓몬 카드/SVN_046.png" alt="" 
+  style="width:  100%; height: 100%; object-fit: contain;">
+</div>
+
+<div id="engbl" style="position: absolute; 
+  top:10%;  left:42%;
+  width: 7.5vw; height: auto;  opacity: 0;  z-index: 1999;  pointer-events: none;">
+  <img src="포켓몬 카드/SVN_047.png" alt="" 
+  style="width:  100%; height: 100%; object-fit: contain;">
+</div>
+
+<div id="engwe" style="position: absolute; 
+  top:10%;  left:48.25%;
+  width: 7.5vw; height: auto;  opacity: 0;  z-index: 1998;  pointer-events: none;">
+  <img src="포켓몬 카드/SVN_048.png" alt="" 
+  style="width:  100%; height: 100%; object-fit: contain;">
+</div>
+
+<div id="engelc" style="position: absolute; 
+  top:10%;  left:54.5%; 
+  width: 7.5vw; height: auto;  opacity: 0;  z-index: 1997;  pointer-events: none;">
+  <img src="포켓몬 카드/SVN_049.png" alt="" 
+  style="width:  100%; height: 100%; object-fit: contain;">
+</div>
+
+<div id="engesp" style="position: absolute; 
+  top:10%;  left:60.75%; 
+  width: 7.5vw; height: auto;  opacity: 0;  z-index: 1996;  pointer-events: none;">
+  <img src="포켓몬 카드/SVN_050.png" alt="" 
+  style="width:  100%; height: 100%; object-fit: contain;">
+</div>
+
+<div id="engfig" style="position: absolute; 
+  top:10%;  left:67%; 
+  width: 7.5vw; height: auto;  opacity: 0;  z-index: 1995;  pointer-events: none;">
+  <img src="포켓몬 카드/SVN_051.png" alt="" 
+  style="width:  100%; height: 100%; object-fit: contain;">
+</div>
+
+<div id="engder" style="position: absolute; 
+  top:10%;  left:73.25%; 
+  width: 7.5vw; height: auto;  opacity: 0;  z-index: 1994;  pointer-events: none;">
+  <img src="포켓몬 카드/SVN_052.png" alt="" 
+  style="width:  100%; height: 100%; object-fit: contain;">
+</div>
+
+<div id="engion" style="position: absolute; 
+  top:10%;  left:79.5%; 
+  width: 7.5vw; height: auto;  opacity: 0;  z-index: 1993;  pointer-events: none;">
+  <img src="포켓몬 카드/SVN_053.png" alt="" 
+  style="width:  100%; height: 100%; object-fit: contain;">
+</div>
+ 
+
+  <div id="atxp" style="position: absolute; 
+padding: 2%; padding-top: 0%;
+   top:35%; 
+   left:42%; 
+   width: 51%;  
+   height: 53%; 
+  opacity: 0; 
+   border-radius: 15px;
+   font-size: 1.2rem;
+  z-index: 2000;
+  background-color: #353535;">
+  <h1>기술</h1>
+포켓몬은 각각 1~3개의 기술을 가지고 있습니다.<br>
+기술 이름 기준 왼쪽에는 기술을 사용하기 위해 필요한 조건인 <font color="#ffd900">에너지</font>, 기술의 오른쪽에는 <font color="#ffd900">데미지</font>가 적혀있습니다.<br>
+기술의 아래쪽에는 기술에 대한 <font color="#ffd900">추가효과</font>가 적혀있습니다.<br>
+또한 <font color="#ffd900">특성</font>을 가지고 있는 포켓몬이 존재합니다 특성은 기술과 별개로 해당 포켓몬이 가지고 있는 능력입니다.<br>
+<br>
+기술 중 데미지에 + 혹은 x 가 적혀있는 기술은 아래 추가효과에서 주는 수치에 기존 데미지 수치를 더하거나 곱하는 기술입니다.<br>
+<br>
+기술의 사용하기 위한 조건인 에너지는 드레곤을 제외한 포켓몬의 타입과 동일한 종류가 있습니다.<br>
+기술을 사용하기 위해선 왼쪽에있는 에너지 무늬의 갯수, 색깔을 맞춰 해단하는 에너지 카드를 기술을 사용할 포켓몬이 가지고 있어야 합니다.<br>
+<font color="#ffd900">무색 에너지</font>는 예외로 이름처럼 무색으로 취급하여 <font color="#ffd900">색은 신경 쓰지 않고 개수만</font> 맞추면 됩니다.<br>
+<br>
+에너지카드는 손(패)에 가지고 있다면 자신의 필드에 나와 있는 포켓몬중 한 마리에게 한 장만 줄 수 있습니다.<br>
+추가로 에너지를 붙이려면 해당 능력/특성을 가지고있는 포켓몬, 트레이너스 카드가 필요합니다.<br>
+</div>
+
+<div class="resetBox" id="resetBox3"><span>	&lt; 뒤로가기</span></div>
+</div>
+
+<div class="ret" style="opacity: 0;" id="retl" >
+
+    <div style=" position: absolute;  
+  top: 18%;
+      left:2%;  
+      width: 48.5vw;   
+      height: auto; 
+  opacity: 1; 
+  z-index: 1999; 
+  pointer-events: none;">
+<img src="포켓몬 카드/후퇴.jpg" alt=""
+      style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+
+   <div style="position: absolute;  
+  top: 26.5%;
+      left:18%;  
+      width: 8vw;   
+      height: auto; 
+  opacity: 0; 
+  z-index: 1999; 
+  pointer-events: none;" id="retexeng">
+<img src="포켓몬 카드/SVN_050.png" alt=""
+      style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+
+  <div style="position: absolute;  
+  top: 21.5%;
+      left:17%;  
+      width: 8vw;   
+      height: auto; 
+  opacity: 1; 
+  z-index: 2000; 
+  pointer-events: none;" id="retexcard1">
+<img src="포켓몬 카드/SV5a_050 -1.png" id="retexcard1img" alt=""
+      style="width: 100%; height: 100%; object-fit: contain; pointer-events: auto;">
+  </div>
+
+  <div style="position: absolute;  
+  top: 52.45%;
+      left:22.5%;  
+      width: 3vw;   
+      height: 0.8vw; 
+  opacity: 0; 
+  z-index: 2001; 
+  pointer-events: none;
+  border: 3px solid rgb(204, 0, 255);
+  " id="retexcard1pnt">
+  </div>
+
+  <div style="position: absolute;  
+  top: 25%;
+      left:67%;  
+      width: 11vw;   
+      height: auto; 
+  opacity: 1; 
+  z-index: 2001; 
+  pointer-events: none;
+  " id="gnxhl1">
+  <img src="포켓몬 카드/후퇴1.png" alt=""
+      style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+  <div style="position: absolute;
+  top: 25%;
+      left:54%;  
+      width: 11.8vw;
+      height: auto; 
+  opacity: 1;
+  z-index: 2001; 
+  pointer-events: none;
+  " id="gnxhl2">
+  <img src="포켓몬 카드/후퇴2.png" alt=""
+      style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+  <div style="position: absolute;  
+  top: 25%;
+      left:79%;  
+      width: 12vw;   
+      height: auto; 
+  opacity: 1; 
+  z-index: 2001; 
+  pointer-events: none;
+  " id="gnxhl3">
+  <img src="포켓몬 카드/후퇴3.png" alt=""
+      style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+
+  <div style="position: absolute;  
+  top: 27.8%;
+      left:63%;  
+      width: 19.5vw;   
+      height: 2vw; 
+  opacity: 1; 
+  z-index: 2001; 
+  pointer-events: none; 
+  font-size: 1.2rem; 
+  text-align : center;
+  " id="retexcard1pnt">
+  포켓몬 마다 후퇴에 필요한 에너지가 다릅니다.
+  </div>
+
+  <div style="position: absolute;  
+  top: 52.5%;
+      left:10.75%;  
+      width: 6vw;   
+      height: auto; 
+  opacity: 1; 
+  z-index: 1999; 
+  pointer-events: auto;" id="retexcard2">
+<img src="포켓몬 카드/RRcard.png" alt=""
+      style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+
+<div id="undoBtn" style="position: absolute; pointer-events: none; opacity: 0; width: 3vw; height: 2.5vw; top: 11%; left: 6%; background: orange;z-index: 2000;">
+  되돌리기
+</div>
+
+  <div id="retxp" style="position: absolute; 
+padding: 2%; padding-top: 0%;
+   top:35%; 
+   left:53%; 
+   width: 34%;
+   height: 45%;
+  opacity: 0;
+   border-radius: 15px;
+   font-size: 1.3rem;
+  z-index: 2000;
+  background-color: #353535;">
+  <h1>후퇴</h1>
+  후퇴는 필드 포켓몬중 싸우고 있는 포켓몬인 <font color="#ffd900">베틀필드 포켓몬</font>과 기다리는 포켓몬 <font color="#ffd900">밴치 포켓몬</font>이 <font color="#ffd900">교체</font>하는 것 입니다.<br>
+<font color="#ffd900">밴치 포켓몬은 기술을 쓸 수 없기에</font> 후퇴를 하면 배틀필드 포켓몬이 밴치로 돌아오며 밴치에서 기다리던 포켓몬 중 한마리가 대신 나가 상대 배틀 포켓몬과 싸울 수 있게 됩니다.<br>
+<br>
+포켓몬이 후퇴할 시 오른쪽 아래 <font color="#ffd900">후퇴</font> 라고 적인 글 옆에 그려져 있는 <font color="#ffd900">에너지의 갯수</font>만큼 <font color="#ffd900">해당 포켓몬이 가지고 있는 에너지</font>를 트레쉬에 버려야 후퇴할 수 있습니다.<br>
+후퇴시 필요한 에너지를 줄이거나 없애주는 특성을 가진 포켓몬이나 트레이너스 카드를 사용하면 후퇴시 필요한 에너지가 줄어들기도 합니다.
+</div>
+
+<div class="resetBox" id="resetBox4"><span>	&lt; 뒤로가기</span></div>
+</div>
+
+<div class="reg" style="opacity: 0;" id="regl" >
+
+  <div id="regul" style="position: absolute;  
+  top: 40%;
+      left:12%;  
+      width: 35vw;   
+      height: auto; 
+  opacity: 0; 
+  z-index: 2001; 
+  pointer-events: none; 
+  ">
+<img src="포켓몬 카드/레귤레이션.png" alt="" 
+  style="width:  100%;
+  height: 100%;  
+    background-position: center;
+     object-fit: contain;">
+  </div>
+
+    <div id="regulpo" style="position: absolute;  
+  top: 32%;
+      left:17.85%;
+      width: 1.3vw;
+      height: 1.7vw;
+  opacity: 0;
+  z-index: 2001;
+  pointer-events: none;
+   border-radius: 20px;
+  border: 4px solid rgb(255, 217, 0);
+  ">
+  </div>
+
+  <div style="position: absolute; top:-70%;  left:17%;  width: 25vw;   height: auto; 
+  opacity: 0; 
+  z-index: 50;
+  pointer-events: none;" id="regcard">
+  <img src="포켓몬 카드/SV5a_050 -1.png" alt="" 
+  style="width:  100%;
+  height: 100%;  
+    background-position: center;
+     object-fit: contain;">
+</div>
+
+<div id="regxp" style="position: absolute; 
+padding: 2%; padding-top: 0%;
+   top: 24%;
+   left: 52%;
+   width: 33%;
+   height: 58%;
+  opacity: 0;
+  font-size: 1.3rem;
+   border-radius: 15px;
+  z-index: 2000;
+  background-color: #353535;">
+  <h1>레귤레이션</h1>
+  레귤레이션은 공식에서 진행하는 카드 <font color="#ffd900">대회에서 사용할 수 있는 카드를 제한하는 룰</font> 입니다.<br>
+   공식 대회에서는 공식에서 공지한 영어가 표기된 카드만 사용가능 합니다.<br>
+카드 왼쪽 맨 아래에 표시되어 있으며 <font color="#ffd900">영어표기로 A~Z까지 진행</font>될것으로 해당 영어 뒤에 <font color="#ffd900">블럭</font>을 붙여 부릅니다 예상되며 일정 기간이 지나면 가장 앞의 영어가 적힌 블럭의 카드들을 사용할 수 없게되고 이후 새로 나오는 카드에 새로운 영어가 표시되어있는 카드가 발매되며 해당 블럭의 카드들이 레귤레이션에 들어오게 됩니다.<br>
+레귤레이션은 보통 2~3개의 블럭 안에서 진행됩니다.<br>
+공식이 지정한 대회가 아닌 자유롭게 플레이시에는 신경쓰지 않아도 상관없습니다.<br>
+<br>
+예외로 새로나온 영어 블럭의 카드중 이전 블럭에 <font color="#ffd900">동일한 이름</font>의 <font color="#ffd900">동일한 능력</font>을 가진 카드는 표기된 레귤레이션이 아닌 <font color="#ffd900">가장 최근에 발매된 카드의 레귤레이션을 따라가 사용할 수 있습니다.</font>
+</div>
+
+  <div class="resetBox" id="resetBox5"><span>	&lt; 뒤로가기</span></div>
+</div>
+
+
+</div>
+</section>
+
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+ 
+<script> 
+  
+  if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 0);
+    });
+  
+
+gsap.utils.toArray(".atitel").forEach(section => {
+  gsap.fromTo(section, 
+  { opacity: 0, y: 100 },
+    {
+      scrollTrigger: {
+        trigger: section,
+        start: "top 63%",
+        toggleActions: "play reverse play reverse",
+      },
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power2.out"
+    });
+});
+ 
+
+ window.addEventListener('DOMContentLoaded', () => {
+// cdcheck 애니메이션 (0.5초 후에 opacity 1로)
+setTimeout(() => {
+  const cdcheck = document.querySelector(".cdcheck");
+  
+
+gsap.to(cdcheck, {
+  opacity: 1,
+  duration: 0.5,
+  onStart: () => {
+    cdcheck.style.pointerEvents = "none";  // 애니메이션 중엔 상호작용 비활성화
+  },
+  onComplete: () => {
+    cdcheck.style.pointerEvents = "auto";  // 애니메이션 끝나면 상호작용 가능
+  }
+});
+}, 200);
+ });
+ 
+ 
+  window.addEventListener("resize", () => {
+  const wrapper = document.getElementById("floatingWrapper");
+  const card = document.getElementById("cardTransform");
+
+});
+
+ document.getElementById("evo").addEventListener("click", () => {
+  const cdcheck = document.querySelector(".cdcheck");
+  const rcard = document.querySelector(".rcard");
+  const evoel = document.getElementById("evoel");
+  const nim = document.getElementById("nim"); 
+  const arow = document.getElementById("arow");
+  const eveexp = document.getElementById("eveexp");
+
+  // cdcheck 
+  gsap.to(cdcheck, {
+    opacity: 0,
+    duration: 0.3,
+    ease: "power2.out",
+    onComplete: () => {
+  cdcheck.style.pointerEvents = "none";
+    }
+  });
+
+  // rcard 
+  gsap.to(rcard, {
+    x: "-25vw",
+    duration: 0.5,
+    ease: "power2.out"
+  });
+
+setTimeout(() => {
+  // evoel 즉시  보이게
+  evoel.style.opacity = 1;
+
+  // nim 애니메이션: opacity -> 1, 회전
+  gsap.to(nim, {
+    opacity: 1,
+    duration: 0.3,
+    ease: "power2.out"
+  });
+
+  gsap.to(eveexp, {
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+  gsap.to(nim, {
+    rotate: "-20deg",
+    transformOrigin: "left bottom",
+    duration: 0.5,
+    ease: "power2.out"
+  });
+  const nyaElements = ["nya1", "nya2", "nya3"];
+  nyaElements.forEach((id, index) => {
+    const element = document.getElementById(id);
+    gsap.to(element, {
+      y: 55,
+      opacity: 1,
+      duration: 0.4,
+      ease: "power2.out",
+      delay: index * 0.1
+    });
+  });
+  document.querySelectorAll(".arrow").forEach((arrow, index) => {
+  setTimeout(() => {
+    gsap.to(arrow, {
+      opacity: 1,
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  }, 300);
+});
+  }, 500);
+  
+const qjadnl = document.getElementById('qjadnl');
+  const onarrow = document.getElementById('onarrow');
+  const downcard = document.getElementById('downcard');
+
+  qjadnl.addEventListener('mouseenter', () => {
+    onarrow.style.opacity = '0'; // upcard보다 위로
+    downcard.style.transform = 'translate(-60%, 15%)'; // upcard 위치로 이동
+  });
+
+  qjadnl.addEventListener('mouseleave', () => {
+    onarrow.style.opacity = '1'; 
+    downcard.style.transform = 'translate(0, 0)'; // 원래 자리로
+  });
+
+});
+
+ document.getElementById("ty").addEventListener("click", () => {
+    const cdcheck = document.querySelector(".cdcheck");
+    const rcard = document.querySelector(".rcard");
+    const typl = document.getElementById("typl");
+      const typxp = document.getElementById("typxp");
+      gsap.to(cdcheck, {
+    opacity: 0,
+    duration: 0.3,
+    ease: "power2.out",
+    onComplete: () => { 
+  cdcheck.style.pointerEvents = "none";
+    }
+  });
+      gsap.to(rcard, {
+    x: "-26vw",
+    duration: 0.5,
+    ease: "power2.out"
+      });
+
+    setTimeout(() => {
+        typl.style.opacity = 1;
+      gsap.to(typxp, {
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+    }, 300);
+
+      const typElements = ["typicongr", "typiconbl", "typiconwe", "typiconel", "typicones", "typiconfi", "typiconde", "typiconie", "typiconider", "typiconinon"];
+  typElements.forEach((id, index) => {
+    const element = document.getElementById(id);
+    gsap.to(element, {
+      y: 55,
+      opacity: 1,
+      duration: 0.4,
+      ease: "power2.out",
+      delay: index * 0.09
+    });
+  });
+
+const tooltip = document.getElementById("tooltip");
+
+document.querySelectorAll(".typicon").forEach(el => {
+  el.addEventListener("mouseover", (e) => {
+    tooltip.textContent = el.dataset.text;
+    tooltip.style.display = "block";
+  });
+
+  el.addEventListener("mousemove", (e) => {
+    tooltip.style.left = e.pageX + 10 + "px";
+    tooltip.style.top = e.pageY - 40 + "px";
+  });
+
+  el.addEventListener("mouseout", () => {
+    tooltip.style.display = "none";
+  });
+});
+
+setTimeout(() => {
+        gsap.to("#wjgkd", {
+          opacity: 1,
+          y:-30,
+          duration: 1,
+          ease: "power2.out"
+        });
+      }, 300);
+
+      
+      
+ 
+ });
+
+  document.getElementById("weak").addEventListener("click", () => {
+    const cdcheck = document.querySelector(".cdcheck");
+    const rcard = document.querySelector(".rcard");
+    const weakl = document.getElementById("weakl");
+      const typxp = document.getElementById("typxp");
+            gsap.to(cdcheck, {
+    opacity: 0,
+    duration: 0.3,
+    ease: "power2.out",
+    onComplete: () => { 
+  cdcheck.style.pointerEvents = "none";
+    }
+  });
+      gsap.to(rcard, {
+    x: "-26vw",
+    duration: 0.5,
+    ease: "power2.out"
+      });
+
+    setTimeout(() => {
+        typl.style.opacity = 1;
+      gsap.to(typxp, {
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+    }, 300);
+
+      const typElements = ["typicongr", "typiconbl", "typiconwe", "typiconel", "typicones", "typiconfi", "typiconde", "typiconie", "typiconider", "typiconinon"];
+  typElements.forEach((id, index) => {
+    const element = document.getElementById(id);
+    gsap.to(element, {
+      y: 55,
+      opacity: 1,
+      duration: 0.4,
+      ease: "power2.out",
+      delay: index * 0.09
+    });
+  });
+
+const tooltip = document.getElementById("tooltip");
+
+document.querySelectorAll(".typicon").forEach(el => {
+  el.addEventListener("mouseover", (e) => {
+    tooltip.textContent = el.dataset.text;
+    tooltip.style.display = "block";
+  });
+
+  el.addEventListener("mousemove", (e) => {
+    tooltip.style.left = e.pageX + 10 + "px";
+    tooltip.style.top = e.pageY - 40 + "px";
+  });
+
+  el.addEventListener("mouseout", () => {
+    tooltip.style.display = "none";
+  });
+});
+
+setTimeout(() => {
+        gsap.to("#wjgkd", {
+          opacity: 1,
+          y:-30,
+          duration: 1,
+          ease: "power2.out"
+        });
+      }, 300);
+
+      
+      
+ 
+ });
+
+ document.getElementById("hp").addEventListener("click", () => {
+  const cdcheck = document.querySelector(".cdcheck"); 
+    const typl = document.getElementById("hpl");
+    
+    gsap.to(cdcheck, {
+    opacity: 0,
+    duration: 0.3,
+    ease: "power2.out",
+    onComplete: () => {
+      cdcheck.style.pointerEvents = "none";
+    }
+  });
+      document.getElementById("rcard").classList.add("hide");
+
+      setTimeout(() => {
+        hpl.style.opacity = 1;
+
+      gsap.to(hpxp, {
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+}); 
+        gsap.to("#youcard", {
+          opacity: 1,
+          y: 30,
+          duration: 1,
+          ease: "power2.out"
+        }); 
+        gsap.to("#mycard", {
+          opacity: 1,
+          y:-30,
+          duration: 1,
+          ease: "power2.out"
+        }); 
+        gsap.to("#hpexcard", {
+          opacity: 1,
+          y:-30,
+          duration: 1,
+          ease: "power2.out"
+        }); 
+ 
+
+    }, 300);
+
+const demca = document.getElementById('demca');
+const hpexcard = document.getElementById('hpexcard');
+  const ten = document.getElementById('ten'); 
+
+  demca.addEventListener('mouseenter', () => {
+    ten.style.opacity = '1'; 
+    ten.style.transform = 'translate(950%, -90%)'; // upcard 위치로 이동
+  });
+
+  demca.addEventListener('mouseleave', () => {
+    ten.style.opacity = '1'; 
+    ten.style.transform = 'translate(0, 0)'; // 원래 자리로
+  });
+
+    hpexcard.addEventListener('mouseenter', () => {
+    ten.style.opacity = '1'; 
+    ten.style.transform = 'translate(950%, -90%)'; // upcard 위치로 이동
+  });
+
+  hpexcard.addEventListener('mouseleave', () => {
+    ten.style.opacity = '1'; 
+    ten.style.transform = 'translate(0, 0)'; // 원래 자리로
+  });
+   
+ });
+
+   document.getElementById("at").addEventListener("click", () => {
+
+    const cdcheck = document.querySelector(".cdcheck");
+  const rcard = document.querySelector(".rcard");
+  const atl = document.getElementById("atl"); 
+  const atxp = document.getElementById("atxp");
+    const atexcard = document.getElementById("atexcard");
+  const eveeng = document.getElementById("eveeng");
+    const eveenbl = document.getElementById("eveenbl"); 
+    const engger = document.getElementById("engger");
+    const engbl = document.getElementById("engbl");
+    const engwe = document.getElementById("engwe");
+    const engelc = document.getElementById("engelc");
+    const engesp = document.getElementById("engesp");
+    const engfig = document.getElementById("engfig");
+    const engder = document.getElementById("engder");
+    const engion = document.getElementById("engion");
+    const noeng = document.getElementById("noeng");
+
+    
+
+  // cdcheck 
+  gsap.to(cdcheck, {
+    opacity: 0,
+    duration: 0.3,
+    ease: "power2.out",
+    onComplete: () => {
+  cdcheck.style.pointerEvents = "none";
+    }
+  });
+
+  gsap.to(rcard, {
+    x: "-23vw",
+    y: "-260",
+    duration: 0.5,
+    ease: "power2.out"
+  });
+
+setTimeout(() => {
+  // evoel 즉시  보이게
+  atl.style.opacity = 1;
+
+
+  gsap.to(atxp, {
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+
+gsap.to(atexcard, { 
+  y: -30, 
+  opacity: 1,
+      duration: 0.4,
+      ease: "power2.out", 
+});
+
+gsap.to(engger, { 
+  y: 40, 
+  opacity: 1,
+      duration: 0.4,
+      ease: "power2.out", 
+});
+
+setTimeout(() => {
+  eveeng.style.opacity = 1;
+  gsap.to(eveeng, { 
+  y: -65, x: -20, 
+      duration: 0.4,
+      ease: "power2.out", 
+});
+
+gsap.to(noeng, { 
+  opacity: 1,
+      duration: 0.4,
+      ease: "power2.out", 
+});
+
+  engbl.style.opacity = 1;
+  gsap.to(engbl, {  
+    x: 120, 
+      duration: 0.4,
+      ease: "power2.out", 
+});
+  }, 100);
+  setTimeout(() => {
+    eveenbl.style.opacity = 1;
+    gsap.to(eveenbl, { 
+  y: -135,  x: -60, 
+      duration: 0.4,
+      ease: "power2.out", 
+}); 
+
+engwe.style.opacity = 1;
+  gsap.to(engwe, {  
+    x: 120, 
+      duration: 0.4,
+      ease: "power2.out", 
+});
+  }, 150);
+  setTimeout(() => {
+engelc.style.opacity = 1;
+  gsap.to(engelc, {  
+    x: 120, 
+      duration: 0.4,
+      ease: "power2.out", 
+});
+  }, 200);
+  setTimeout(() => {
+engesp.style.opacity = 1;
+  gsap.to(engesp, {  
+    x: 120, 
+      duration: 0.4,
+      ease: "power2.out", 
+});
+  }, 250);
+
+    setTimeout(() => {
+engfig.style.opacity = 1;
+  gsap.to(engfig, {  
+    x: 120, 
+      duration: 0.4,
+      ease: "power2.out", 
+});
+  }, 300);
+
+  setTimeout(() => {
+engder.style.opacity = 1;
+  gsap.to(engder, {  
+    x: 120, 
+      duration: 0.4,
+      ease: "power2.out", 
+});
+  }, 350);
+
+  setTimeout(() => {
+engion.style.opacity = 1;
+  gsap.to(engion, {  
+    x: 120, 
+      duration: 0.4,
+      ease: "power2.out", 
+});
+  }, 400);
+
+}, 300);  
+
+   });
+
+   document.getElementById("ret").addEventListener("click", () => {
+
+    const cdcheck = document.querySelector(".cdcheck");
+  const rcard = document.querySelector(".rcard");
+  const retl = document.getElementById("retl"); 
+  const retxp = document.getElementById("retxp");
+  const retexcard1 = document.getElementById('retexcard1'); 
+  const retexcard2 = document.getElementById('retexcard2');
+  const retexeng = document.getElementById("retexeng");
+  const retexcard1img = document.getElementById('retexcard1img');
+    const retexcard1pnt = document.getElementById('retexcard1pnt');
+      const gnxhl1 = document.getElementById("gnxhl1");
+  const gnxhl2 = document.getElementById('gnxhl2');
+    const gnxhl3 = document.getElementById('gnxhl3');
+
+  // cdcheck 
+  gsap.to(cdcheck, {
+    opacity: 0,
+    duration: 0.3,
+    ease: "power2.out",
+    onComplete: () => {
+      cdcheck.style.pointerEvents = "auto";
+    }
+  });
+
+      document.getElementById("rcard").classList.add("hide");
+
+setTimeout(() => {
+  // evoel 즉시  보이게
+  retl.style.opacity = 1;
+
+  gsap.to(retxp, {
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+
+gsap.to(retexcard1, {
+  y: 50,
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+
+gsap.to(retexcard2, {
+  y: 50,
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+
+gsap.to(gnxhl2, {
+  y: -40,
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+
+setTimeout(() => {
+gsap.to(gnxhl1, {
+  y: -40,
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+},100);
+
+setTimeout(() => {
+  gsap.to(retexeng, {
+    y: 60,
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+
+gsap.to(gnxhl3, {
+  y: -40,
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+}, 200);
+
+}, 300);
+
+setTimeout(() => {
+  retexcard1img.addEventListener('mouseenter', () => { 
+    retexcard1.style.width = '12vw'; 
+    retexcard1.style.top = '17.5%';
+      retexcard1.style.left= '15.5%';
+  
+    retexcard1pnt.style.opacity = 1; 
+    retexcard1.style.pointerEvents = "auto";
+  });
+
+  retexcard1img.addEventListener('mouseleave', () => {
+    
+    retexcard1pnt.style.opacity = 0; 
+    retexcard1.style.width = '8vw'; 
+    retexcard1.style.top = '21.5%';
+      retexcard1.style.left= '17%'; // 원래 자리로
+      retexcard1.style.pointerEvents = "none";
+  });
+
+  
+
+   }, 400);
+   });
+ 
+   document.getElementById("retexcard1").addEventListener("click", () => {
+      const cdcheck = document.querySelector(".cdcheck");
+    cdcheck.style.pointerEvents = "none";
+ 
+      const retexcard1 = document.getElementById('retexcard1'); 
+  const retexcard2 = document.getElementById('retexcard2');
+  const retexeng = document.getElementById("retexeng");
+  const retexcard1img = document.getElementById('retexcard1img');
+  const undoBtn = document.getElementById("undoBtn");
+  retexcard1.style.pointerEvents = "none";
+  retexcard1img.style.pointerEvents = "none";
+
+  undoBtn.style.pointerEvents = "auto";
+  
+setTimeout(() => {
+  setTimeout(() => {
+    gsap.to(retexcard1, {
+   y: "203%",
+ x: "-104.5%",
+  width: "6vw",
+  opacity: 1,
+  duration: 0.5,
+  ease: "power2.out"
+});
+
+gsap.to(retexcard2, {
+ y: "-107%",
+ x: "78%",
+  width: "8vw",
+  opacity: 1,
+  duration: 0.5,
+  ease: "power2.out"
+});
+
+gsap.to(undoBtn, {
+  opacity: 1,
+  duration: 0.5,
+  ease: "power2.out"
+});
+  }, 300);
+ 
+  gsap.to(retexeng, {
+    y: "155%",
+ x: "423%",
+  width: "6vw",
+  opacity: 1,
+  duration: 0.5,
+  ease: "power2.out"
+});
+
+}, 100);
+   });
+
+   document.getElementById("undoBtn").addEventListener("click", () => {
+  const cdcheck = document.querySelector(".cdcheck");
+  const retexcard1 = document.getElementById('retexcard1'); 
+  const retexcard2 = document.getElementById('retexcard2');
+  const retexeng = document.getElementById("retexeng");
+  const retexcard1img = document.getElementById('retexcard1img');
+    const undoBtn = document.getElementById("undoBtn");
+  
+
+  // 원래 위치, 크기, 상태로 되돌리기
+  gsap.to(retexcard1, {
+    y: "0%",
+    x: "0%",
+    width: "8vw", // 원래 너비에 맞게 조정하세요
+    opacity: 0, 
+    ease: "power2.out"
+  });
+
+  gsap.to(retexcard2, {
+    y: "0%",
+    x: "0%",
+    width: "6vw", // 원래 너비
+    opacity: 0, 
+    ease: "power2.out"
+  });
+
+  gsap.to(retexeng, {
+    y: "0%",
+      x:"0%",
+      width: "8vw",  // 원래 너비
+    opacity: 0, 
+    ease: "power2.out"
+  });
+
+  gsap.to(undoBtn, {
+  opacity: 0,
+  duration: 0.5,
+  ease: "power2.out"
+});
+  
+ 
+  retexcard1.style.pointerEvents = "auto";
+  retexcard1img.style.pointerEvents = "auto";
+  undoBtn.style.pointerEvents = "none";
+
+  setTimeout(() => {
+
+  gsap.to(retexcard1, {
+  y: 50,
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+
+gsap.to(retexcard2, {
+  y: 50,
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+
+setTimeout(() => {
+  gsap.to(retexeng, {
+    y: 60,
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+}, 200);
+  },500);
+});
+
+   document.getElementById("reg").addEventListener("click", () => {
+    const cdcheck = document.querySelector(".cdcheck");
+  const rcard = document.querySelector(".rcard");
+  const regl = document.getElementById("regl");
+   const regxp = document.getElementById("regxp");
+   const regul = document.getElementById("regul");
+   const regcard = document.getElementById("regcard");
+   const regulpo = document.getElementById("regulpo");
+
+
+gsap.to(cdcheck, {
+    opacity: 0,
+    duration: 0.3,
+    ease: "power2.out",
+    onComplete: () => {
+  cdcheck.style.pointerEvents = "none";
+    }
+  });
+
+      document.getElementById("rcard").classList.add("hide");
+
+setTimeout(() => {
+  // evoel 즉시  보이게
+  regl.style.opacity = 1;
+  gsap.to(regxp, {
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+ 
+  gsap.to(regul, {
+    y: 40,
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+
+gsap.to(regcard, {
+    y: 320,
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+setTimeout(() => {
+  gsap.to(regulpo, { 
+  opacity: 1,
+  duration: 0.3,
+  ease: "power2.out"
+});
+  }, 300);
+
+  }, 500);
+});
+
+
+   const resetBox = document.querySelector(".resetBox"); 
+document.getElementById("resetBox").addEventListener("click", () => {
+location.reload();
+});
+   
+const resetBox1 = document.querySelector(".resetBox1"); 
+document.getElementById("resetBox1").addEventListener("click", () => {
+location.reload();
+});
+
+  const resetBox2 = document.querySelector(".resetBox2"); 
+document.getElementById("resetBox2").addEventListener("click", () => {
+location.reload();
+});
+   
+    const resetBox3 = document.querySelector(".resetBox3"); 
+document.getElementById("resetBox3").addEventListener("click", () => {
+location.reload();
+});
+
+const resetBox4 = document.querySelector(".resetBox4"); 
+document.getElementById("resetBox4").addEventListener("click", () => {
+location.reload();
+});
+
+const resetBox5 = document.querySelector(".resetBox5"); 
+document.getElementById("resetBox5").addEventListener("click", () => {
+location.reload();
+});
+
+    </script>
+  
+</body>

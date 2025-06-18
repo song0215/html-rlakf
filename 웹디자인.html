@@ -1,0 +1,565 @@
+<head>
+   
+  <style>
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-image: linear-gradient(to top, #222 50%, #111 50%);
+      color: #fff;
+    }
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  width: 100%;   /* 100vw 대신 100% */
+  height: 50px;
+  background-color: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 20px;
+  box-sizing: border-box;
+  z-index: 999;
+}
+  nav ul {
+          list-style-type: none;
+          padding: 0;
+          opacity: 1;
+      }
+      .nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-left {
+  top: 50%;
+}
+
+  .nav-left li, .nav-right li {
+      list-style-type: none;
+      margin-right: 10px;
+      color: white;
+  }
+
+  .nav-left li a, .nav-right li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+  }
+
+  .nav-left li a:hover,
+  .nav-right li a:hover {
+      text-decoration: underline;
+      color: white;
+  }
+  .nav-left img {
+  width: 40px;
+  height: auto;
+  }
+
+  .nav-left li img {
+  height: 40px; /* 기존 이미지 크기 유지 */
+  cursor: pointer;
+}
+
+/* 가운데 이미지 (새로 추가) */
+.nav-center-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 44px;  /* 50px - 3px*2 해서 살짝 작게 */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.nav-center-logo img {
+  height: 100%;
+  display: block;
+}
+  .sidebar {
+          position: fixed;
+          top: 0;
+          left: -300px;  /* 사이드바를 화면 밖으로 숨김 */
+          width: 300px;
+          height: 100%;
+          background-color: rgba(24, 24, 24, 0.9);
+          color: white;
+          transition: left 0.3s ease;  /* 슬라이드 효과 */
+          padding-top: 20px;
+          z-index: 1000;
+      }
+
+      .sidebar a:first-of-type {
+          margin-top: 40px;
+          border-top: 1px solid rgb(185, 185, 185);
+      }
+
+      .sidebar a {
+          color: white;
+          text-decoration: none;
+          padding: 10px;
+          padding-left: 20px;
+          display: block;
+          font-size: 20px;
+          border-bottom: 1px solid rgb(185, 185, 185);
+      }
+
+      .sidebar a:hover {
+          background-color: #575757;
+      }
+
+      /* 사이드바를 열 때 */
+      .sidebar.open {
+          left: 0;  /* 화면으로 사이드바를 슬라이드 */
+      }
+
+      /* 사이드바 닫기 버튼 */
+      .close-btn {
+          position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 30px;
+          color: white;
+          cursor: pointer;
+      }
+
+
+
+      .section1 {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  min-height: 100vh; /* 화면 가득 채우기 */
+  overflow: visible; /* 혹시라도 잘리는 걸 방지 */
+}
+  .section2 {
+    background-color: #222;
+  }
+
+  .section3 {
+    background-color: #111;
+    height: 50px;
+  }
+  /* 화면 나누기 */
+
+  .title {
+color: white;
+opacity: 0;
+transform: translateY(50px);
+}
+.atext{
+  font-size: 1.0em;
+}
+.atitel{
+  transition: transform 0.8s ease;
+}
+#container {
+  width: 60vw;
+    height: 60%;
+    resize: both;
+    display: flex;
+    justify-content: left;
+
+  }
+
+  #text {
+    color: #ffffff;
+    text-align: center;
+  }
+
+  .card-container {
+      width: 24vmin;
+      height: 33.6vmin;
+      perspective: 1000px;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1s;
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-front {
+      background: url('./포켓몬 카드/SVD_034.png') center / cover;
+    }/* 카드 앞 */
+
+    .card-back {
+      background: url('./포켓몬 카드/1_3.png') center / cover;
+      transform: rotateY(180deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: black;
+    }/* 카드 뒤 */
+
+    .imgbutbox {
+      display: inline-block;
+      width: 25vmax;
+      height: 15vmax;
+      background-color: #5c5c5c;
+      cursor: pointer;
+      outline: none;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .imgbutbox img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.05); /* 처음부터 살짝 확대 */
+      transition: filter 0.3s ease, transform 0.3s ease;
+      display: block;
+    }
+
+    .imgbutbox:hover img,
+    .imgbutbox:focus img {
+      filter: brightness(50%);
+      transform: scale(1);
+    }
+
+    .imgbutbox .overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 1.5em;
+  font-weight: bold;
+  opacity: 0;
+  pointer-events: none; /* 마우스 이벤트 방지 */
+  transition: opacity 0.3s ease;
+  white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+/* hover 시 텍스트 보임 */
+.imgbutbox:hover .overlay-text,
+.imgbutbox:focus .overlay-text {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+    .video-container {
+  width: 80%;
+  height: 40vw;
+  margin-top: 10vh;
+  position: relative; /* absolute 제거 */
+}
+
+.vid {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+html, body {
+      scroll-behavior: auto;
+    }
+    
+
+
+      
+  </style>
+  
+</head>
+<body>
+  
+  <nav>
+      <div class="nav">
+          <ul class="nav-left">
+              <li><img src="포켓몬 카드/삼짝.png"alt="Logo" onclick="toggleSidebar()"></li>
+          </ul>
+          
+          <a href="./웹디자인.html" class="nav-center-logo">
+      <img src="포켓몬 카드/logo.png" alt="Center Logo">
+    </a>
+
+    <ul class="nav-right">
+      <!-- 기존 오른쪽 메뉴들 -->
+    </ul>
+
+      </div>
+  </nav>
+
+  <div id="sidebar" class="sidebar">
+      <span class="close-btn" onclick="toggleSidebar()">&times;</span>
+      <a href="./웹디-0 복사본.html" >1</a>
+      <a href="./웹디-1.html">2</a>
+      <a href="./웹디-2.html">3</a> 
+      <!--<a href="./tst/Untitled-3.html">4</a>-->
+  </div>
+
+  <script>
+      // 사이드바 열기/닫기 함수
+      function toggleSidebar() {
+          var sidebar = document.getElementById("sidebar");
+          sidebar.classList.toggle("open");
+      }
+  </script>
+
+<section class="section section1" id="section1">
+  <!-- <div class="video-container"> 
+    <video class="vid" muted autoplay playsinline>
+      <source src="./카드1.mp4" type="video/mp4">
+    </video>
+  </div>-->
+
+
+ <div class="title" style="
+  margin: 0; 
+  padding: 20px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 30%;
+  right: 10%;
+
+  text-align: right;">
+  
+<span style="font-size: 7vmax; color: #ffffff;">Pokémon</span>
+<span style="font-size: 5vmax; color: #ffffff;">card game</span>
+</div>
+
+<div style="padding: 20px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  width: 50vw;
+  height: 38vw;
+  top: 10%;
+  left: 5%; 
+  text-align: left;">
+  <video src="포켓몬 카드/Comp 1.mp4" style="width: 100%; height: 100%;" autoplay muted="muted"> </video>
+</div>
+
+</section>
+
+<section class="section section2" id="section2" style="height: 100%; padding-top: 5px; padding-left: 5%;padding-right: 5%;">
+  <div style="width:50vmax; height: 8vmax;  margin-top: 50px; margin-bottom: 20px;">
+  <span class="atitel" style="font-size: 4vmax; line-height: 200%; vertical-align: middle;">포켓몬 카드란?</span>
+  
+</div>
+<div style="align-items: center; display: flex; justify-content: center; width:25vw; height: 61%; float: right;">
+  <div class="card-container">
+      <div class="card" id="pokemonCard">
+        <div class="card-face card-front"></div>
+        <div class="card-face card-back"></div>
+      </div>
+    </div>
+</div>
+  <div id="container" style="float: left; ">
+      <span id="text" style="vertical-align: middle;">포켓몬 카드 게임(ポケモンカードゲーム)은 비디오 게임(컴퓨터 게임) 포켓몬스터를 제재로 한 트레이딩 카드 게임(TCG)이다. 일본에서 약칭하기로 PCG, 포케카(ポケカ) 등.
+          개발원은 주식회사 크리처즈, 발매원은 주식회사 포켓몬. 과거 발매원은 일본에서 미디어 팩토리, 미국에서 위저드 오브 더 코스트였었다.기본적으로 비디오 게임인 포켓몬스터 시리즈의 전투를 가져다 카드 게임에 옮긴 것으로 양자간 설정차가 드문드문 발생한다.게임이 남녀노소 다양한 연령층을 타겟으로 했기 때문에 전체적으로 입문하기 쉬운 난이도지만 그렇다고 마냥 단순하지는 않다. 카드 게임으로써 덱과 자신의 플레이를 연구할 수 있는 심화적인 부분도 역시 존재한다.
+          드로우와 서치, 회수 같은 서포트 카드의 성능이 다른 카드 게임에 비해 매우 파격적인 것이 특징. 손 패가 단 1장 남은 상태에서도 얼마든지 위기를 극복하고, 역전 할 수 있기 때문에 게임은 흥미진진한 편이다.</span>
+  </div>
+
+</section>
+
+<section class="section section3" id="section3" style="height: 70vmax; ">
+  <div style=" width:80%; height: 90%; left: 10%; position: absolute;  align-items: center; left: 10%; top: 15%;">
+  
+    <div style=" grid-gap: 3%; width:100%; height: 18vmax; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+      <div class="imgbutbox" role="button" tabindex="0" data-url="./웹디-0 복사본.html" data-scroll="97%">
+        <img src="포켓몬 카드/fnftjfaud.png">
+        <div class="overlay-text">게임 룰</div>
+      </div>
+      <div class="imgbutbox" role="button" tabindex="0" data-url="./웹디-1.html" data-scroll="90%">
+        <img src="포켓몬 카드/fpdjeh.png">
+        <div class="overlay-text">카드 레어도</div>
+      </div>
+  </div>
+  <div style=" grid-gap: 3%; width:100%; height: 18vmax; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+    <div class="imgbutbox" role="button" tabindex="0" data-url="./웹디-2.html" data-scroll="97%">
+      <img src="포켓몬 카드/dydvna.png">
+      <div class="overlay-text">게임 용품</div>
+    </div>
+    <!--<div class="imgbutbox" role="button" tabindex="0" data-url="./tst/Untitled-3.html" data-scroll="90%">
+      <img src="포켓몬 카드/SV-P_137.png">
+      <div class="overlay-text">텍스트1</div>
+    </div>-->
+  </div>
+  
+ 
+  </div>
+</section>
+
+
+<!-- Optional JavaScript Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<script>
+
+if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 0);
+    });
+  
+gsap.utils.toArray("section").forEach(section => {
+  gsap.fromTo(section, 
+    { opacity: 0, y: 100 },
+    {
+      scrollTrigger: {
+        trigger: section,
+        start: "top 80%",
+        toggleActions: "play reverse play reverse",
+      },
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power2.out"
+    });
+});
+gsap.utils.toArray(".atitel").forEach(section => {
+  gsap.fromTo(section, 
+  { opacity: 0, y: 100 },
+    {
+      scrollTrigger: {
+        trigger: section,
+        start: "top 63%",
+        toggleActions: "play reverse play reverse",
+      },
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power2.out"
+    });
+});
+
+document.addEventListener("click", function (e) {
+  const sidebar = document.getElementById("sidebar");
+  const navIcon = document.querySelector(".nav-left img");
+
+  if (!sidebar.contains(e.target) && !navIcon.contains(e.target)) {
+    sidebar.classList.remove("open");
+  }
+});
+
+gsap.utils.toArray("#text").forEach(section => {
+  gsap.fromTo(section, 
+    { opacity: 0, y: 100 },
+    {
+      scrollTrigger: {
+        trigger: section,
+        start: "top 90%",
+        toggleActions: "play reverse play reverse",
+      },
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power2.out"
+    });
+});
+      const container = document.getElementById("container");
+const text = document.getElementById("text");
+
+function updateFontSize() {
+  const width = container.offsetWidth;
+  const height = container.offsetHeight;
+
+  // 너비와 높이의 평균 또는 다른 가중치를 적용 가능
+  const size = Math.sqrt(width * height); // 대각선 길이처럼 비례 계산
+
+  const fontSize = size * 0.04; // 비율 조절
+  text.style.fontSize = `${fontSize}px`;
+}
+
+
+const observer = new ResizeObserver(updateFontSize);
+observer.observe(container);
+
+window.addEventListener("load", updateFontSize);
+
+setTimeout(() => {
+        gsap.to(".title", {
+          opacity: 1,
+          y:0,
+          duration: 1,
+          ease: "power2.out"
+        });
+      }, 1000);
+
+      gsap.registerPlugin(ScrollTrigger);
+
+// 회전 애니메이션
+gsap.to("#pokemonCard", {
+rotateY: 1080, // 3회전 (360 x 3)
+ease: "none",
+scrollTrigger: {
+  trigger: "#pokemonCard",
+  start: "top bottom",   // 스크롤 시작 지점
+  end: "bottom top",     // 스크롤 종료 지점
+  scrub: true,           // 스크롤과 연동
+  markers: false
+}
+});
+
+// 버튼 클릭 및 키보드 이동 처리
+document.querySelectorAll('.imgbutbox').forEach(button => {
+      button.addEventListener('click', () => {
+        const url = button.getAttribute('data-url');
+        if (url) {
+          window.location.href = url;
+        }
+      });
+
+      button.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          button.click();
+        }
+      });
+    });
+
+    // GSAP 스크롤 애니메이션 처리
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.utils.toArray(".imgbutbox").forEach(section => {
+      const scrollStart = section.getAttribute("data-scroll") || "95%";
+      gsap.fromTo(section,
+        { opacity: 0, y: 100 },
+        {
+          scrollTrigger: {
+            trigger: section,
+            start: `top ${scrollStart}`,
+            toggleActions: "play reverse play reverse",
+          },
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power2.out"
+        });
+    });
+
+    window.addEventListener('load', () => {
+  // 강제로 스크롤 위치를 맨 위로
+  setTimeout(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    document.documentElement.scrollTop = 0; // 추가 안전조치
+    document.body.scrollTop = 0; // 일부 브라우저 호환성
+  }, 50); // 요소 렌더링 이후 타이밍 확보
+});
+</script>
+  
+</body>
